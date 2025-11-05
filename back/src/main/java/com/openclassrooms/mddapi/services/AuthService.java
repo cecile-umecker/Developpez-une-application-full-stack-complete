@@ -1,14 +1,22 @@
 package com.openclassrooms.mddapi.services;
 
+import java.util.Arrays;
+
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.openclassrooms.mddapi.Utils.CookieUtil;
 import com.openclassrooms.mddapi.dto.LoginDTO;
 import com.openclassrooms.mddapi.dto.LoginResponseDTO;
 import com.openclassrooms.mddapi.dto.RegisterDTO;
 import com.openclassrooms.mddapi.models.User;
 import com.openclassrooms.mddapi.repository.UserRepository;
 import com.openclassrooms.mddapi.security.JwtService;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Cookie;
+
 
 @Service
 public class AuthService {
@@ -54,5 +62,37 @@ public class AuthService {
         userRepository.save(user);
         // Pas de token généré ici, juste création utilisateur
     }
+
+    public void refreshToken(HttpServletRequest request, HttpServletResponse response) {
+        Cookie[] cookies = request.getCookies();
+        if (cookies == null) throw new RuntimeException("No cookies found");
+
+        // Récupération du refreshToken depuis les cookies
+        String refreshToken = Arrays.stream(cookies)
+                .filter(c -> "refreshToken".equals(c.getName()))
+                .findFirst()
+                .map(Cookie::getValue)
+                .orElseThrow(() -> new RuntimeException("Refresh token not found"));
+
+        // Extraction de l'identifiant de l'utilisateur depuis le token
+        String userId = jwtService.extractUserId(refreshToken);
+
+        // Vérification de la validité du token
+        if (!jwtService.isTokenValid(refreshToken, userId)) {
+            throw new RuntimeException("Invalid refresh token");
+        }
+
+        // Récupération de l'utilisateur en base
+        var user = userRepository.findByEmail(userId)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Génération des nouveaux tokens
+        String newAccessToken = jwtService.generateToken(user.getEmail(), false); // 1h
+        String newRefreshToken = jwtService.generateToken(user.getEmail(), true); // 7 jours
+
+        // Ajout des cookies à la réponse
+        CookieUtil.addCookies(response, newAccessToken, newRefreshToken);
+    }
+
 }
 

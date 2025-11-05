@@ -3,6 +3,7 @@ package com.openclassrooms.mddapi.security;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import io.jsonwebtoken.Jwts;
@@ -17,7 +18,6 @@ public class JwtService {
     private final long refreshExpiration;
 
     public JwtService() {
-        // Charger depuis le .env via System.getProperty()
         this.jwtSecret = System.getProperty("JWT_SECRET");
         long defaultExpiration = Long.parseLong(System.getProperty("JWT_EXPIRATION")); // ex: 3600000ms
         this.accessExpiration = defaultExpiration; // 1h
@@ -25,11 +25,11 @@ public class JwtService {
     }
 
     /**
-     * Génère un token JWT.
+     * Génère un JWT pour l'utilisateur.
      *
-     * @param userId ID de l'utilisateur
-     * @param isRefreshToken true si c'est un refresh token, false sinon
-     * @return token signé
+     * @param userId ID ou username de l'utilisateur
+     * @param isRefreshToken true si c'est un refresh token
+     * @return le JWT compacté
      */
     public String generateToken(String userId, boolean isRefreshToken) {
         long now = System.currentTimeMillis();
@@ -44,10 +44,7 @@ public class JwtService {
     }
 
     /**
-     * Extrait l'ID utilisateur d'un token JWT.
-     *
-     * @param token JWT à parser
-     * @return userId contenu dans le token
+     * Extrait l'ID ou username de l'utilisateur depuis le token.
      */
     public String extractUserId(String token) {
         return Jwts.parserBuilder()
@@ -56,5 +53,27 @@ public class JwtService {
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
+    }
+
+    /**
+     * Vérifie si le token est valide (bien signé et non expiré).
+     */
+    public boolean isTokenValid(String token, String userId) {
+        try {
+            String subject = extractUserId(token);
+            return (subject.equals(userId) && !isTokenExpired(token));
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    private boolean isTokenExpired(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8)))
+                .build()
+                .parseClaimsJws(token)
+                .getBody()
+                .getExpiration()
+                .before(new Date());
     }
 }

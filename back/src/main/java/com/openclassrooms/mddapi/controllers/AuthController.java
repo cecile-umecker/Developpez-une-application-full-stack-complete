@@ -10,6 +10,8 @@ import com.openclassrooms.mddapi.dto.MessageDTO;
 import com.openclassrooms.mddapi.dto.RegisterDTO;
 import com.openclassrooms.mddapi.services.AuthService;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -19,47 +21,53 @@ public class AuthController {
   
   private final AuthService authService;
 
-  @PostMapping("/login")
-  public ResponseEntity<MessageDTO> login(@RequestBody LoginDTO request) {
-      try {
-          LoginResponseDTO tokens = authService.login(request);
+    @PostMapping("/login")
+    public ResponseEntity<MessageDTO> login(@RequestBody LoginDTO request) {
+        try {
+            LoginResponseDTO tokens = authService.login(request);
 
-          ResponseCookie accessCookie = ResponseCookie.from("access_token", tokens.getAccessToken())
-                  .httpOnly(true)
-                  .secure(false) // true en prod HTTPS
-                  .path("/")
-                  .maxAge(60 * 60) // 1h
-                  .sameSite("Strict")
-                  .build();
+            ResponseCookie accessCookie = ResponseCookie.from("access_token", tokens.getAccessToken())
+                    .httpOnly(true)
+                    .secure(false) // true en prod HTTPS
+                    .path("/")
+                    .maxAge(60 * 60) // 1h
+                    .sameSite("Strict")
+                    .build();
 
-          ResponseCookie refreshCookie = ResponseCookie.from("refresh_token", tokens.getRefreshToken())
-                  .httpOnly(true)
-                  .secure(false)
-                  .path("/")
-                  .maxAge(7 * 24 * 60 * 60) // 7 jours
-                  .sameSite("Strict")
-                  .build();
+            ResponseCookie refreshCookie = ResponseCookie.from("refresh_token", tokens.getRefreshToken())
+                    .httpOnly(true)
+                    .secure(false)
+                    .path("/")
+                    .maxAge(7 * 24 * 60 * 60) // 7 jours
+                    .sameSite("Strict")
+                    .build();
 
-          return ResponseEntity.ok()
-                  .header("Set-Cookie", accessCookie.toString())
-                  .header("Set-Cookie", refreshCookie.toString())
-                  .body(new MessageDTO("Login successful"));
+            return ResponseEntity.ok()
+                    .header("Set-Cookie", accessCookie.toString())
+                    .header("Set-Cookie", refreshCookie.toString())
+                    .body(new MessageDTO("Login successful"));
 
-      } catch (RuntimeException e) {
-          return ResponseEntity.status(401)
-                  .body(new MessageDTO(e.getMessage()));
-      }
-  }
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(401)
+                    .body(new MessageDTO(e.getMessage()));
+        }
+    }
 
-  @PostMapping("/register")
-  public ResponseEntity<MessageDTO> register(@RequestBody RegisterDTO request) {
-      try {
-          authService.register(request);
-          return ResponseEntity.status(201)
-                  .body(new MessageDTO("Registration successful"));
-      } catch (RuntimeException e) {
-          return ResponseEntity.status(409)
-                  .body(new MessageDTO(e.getMessage()));
-      }
-  }
+    @PostMapping("/register")
+    public ResponseEntity<MessageDTO> register(@RequestBody RegisterDTO request) {
+        try {
+            authService.register(request);
+            return ResponseEntity.status(201)
+                    .body(new MessageDTO("Registration successful"));
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(409)
+                    .body(new MessageDTO(e.getMessage()));
+        }
+    }
+
+    @PostMapping("/refresh")
+    public ResponseEntity<?> refresh(HttpServletRequest request, HttpServletResponse response) {
+        authService.refreshToken(request, response);
+        return ResponseEntity.ok().build();
+    }
 }
