@@ -16,6 +16,25 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Cookie;
 
+/**
+ * Service responsible for authentication and authorization operations in the MDD API.
+ * 
+ * This service handles user authentication workflows including registration, login,
+ * and token refresh mechanisms. It manages JWT token generation and cookie-based
+ * token storage for maintaining user sessions.
+ * 
+ * Key responsibilities:
+ * - User registration with validation and password encryption
+ * - User login with credential verification
+ * - JWT access and refresh token generation
+ * - Token refresh for extending user sessions
+ * - Secure cookie management for token storage
+ * 
+ * The service uses BCrypt password encoding for security and implements a dual-token
+ * system (access token and refresh token) to balance security and user experience.
+ * All authentication operations validate user credentials and token validity before
+ * proceeding.
+ */
 
 @Service
 public class AuthService {
@@ -47,19 +66,16 @@ public class AuthService {
     }
 
     public void register(RegisterDTO request) {
-        // Vérifie si username ou email déjà pris
         if (userRepository.findByUsernameOrEmail(request.getUsername(), request.getEmail()).isPresent()) {
             throw new RuntimeException("Username or email already exists");
         }
 
-        // Création utilisateur avec password hashé
         User user = new User();
         user.setUsername(request.getUsername());
         user.setEmail(request.getEmail());
         user.setPassword(passwordEncoder.encode(request.getPassword()));
 
         userRepository.save(user);
-        // Pas de token généré ici, juste création utilisateur
     }
 
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) {
@@ -74,30 +90,24 @@ public class AuthService {
                 .orElseThrow(() -> new RuntimeException("Refresh token not found"));
 
 
-        // Extraction de l'ID utilisateur depuis le token
         String userId = jwtService.extractUserId(refreshToken);
 
-        // Vérification que l'ID correspond bien à un utilisateur existant
         boolean exists = userRepository.findById(Long.parseLong(userId)).isPresent();
 
         if (!exists) {
             throw new RuntimeException("User not found");
         }
 
-        // Vérification de la validité du token
         if (!jwtService.isTokenValid(refreshToken, userId)) {
             throw new RuntimeException("Invalid refresh token");
         }
 
-        // Récupération de l'utilisateur
         var user = userRepository.findById(Long.parseLong(userId))
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
-        // Génération des nouveaux tokens
         String newAccessToken = jwtService.generateToken(user.getId().toString(), false);
         String newRefreshToken = jwtService.generateToken(user.getId().toString(), true);
 
-        // Ajout des cookies à la réponse
         CookieUtil.addCookies(response, newAccessToken, newRefreshToken);
     }
 }

@@ -1,9 +1,10 @@
 -- Users
 INSERT INTO user (id, username, password, email, created_at, updated_at)
 VALUES
-(1, 'alice', 'pass', 'alice@mail.com', NOW(), NOW()),
-(2, 'bob', 'pass', 'bob@mail.com', NOW(), NOW())
+(1, 'alice', '$2a$10$nViIYzhrQPZ6feTALrb39uQ10EJzIhcY.yZsF5f5HhMjU4GfasDJe', 'alice@mail.com', NOW(), NOW()),
+(2, 'bob', '$2a$10$nViIYzhrQPZ6feTALrb39uQ10EJzIhcY.yZsF5f5HhMjU4GfasDJe', 'bob@mail.com', NOW(), NOW())
 ON DUPLICATE KEY UPDATE id=id;
+-- passwords are 'test!1234'
 
 -- Topics
 INSERT INTO topic (id, title, description)

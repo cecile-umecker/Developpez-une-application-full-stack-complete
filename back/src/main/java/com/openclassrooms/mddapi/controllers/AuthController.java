@@ -3,6 +3,7 @@ package com.openclassrooms.mddapi.controllers;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import com.openclassrooms.mddapi.Utils.CookieUtil;
 import com.openclassrooms.mddapi.dto.LoginDTO;
 import com.openclassrooms.mddapi.dto.MessageDTO;
 import com.openclassrooms.mddapi.dto.RegisterDTO;
@@ -15,6 +16,21 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+
+/**
+ * Controller handling authentication-related endpoints.
+ * Provides functionality for user login, registration, token refresh and logout operations.
+ * All endpoints are mapped under the "/auth" path.
+ * 
+ * This controller uses JWT (JSON Web Token) based authentication with cookie storage
+ * and implements RESTful endpoints for user authentication flows.
+ *
+ * The following operations are supported:
+ * - User login with credentials
+ * - New user registration 
+ * - Access token refresh using refresh token
+ * - User logout with cookie cleanup
+ */
 
 @RestController
 @RequestMapping("/auth")
@@ -66,4 +82,16 @@ public class AuthController {
         authService.refreshToken(request, response);
         return ResponseEntity.ok().build();
     }
+
+    @Operation(summary = "Logout user", description = "Delete authentication cookies to log out the user")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Logout successful"),
+        @ApiResponse(responseCode = "401", description = "User not authenticated")
+    })
+    @PostMapping("/logout")
+    public ResponseEntity<MessageDTO> logout(HttpServletResponse response) {
+        CookieUtil.clearCookies(response);
+        return ResponseEntity.ok(new MessageDTO("Logout successful"));
+    }
+
 }

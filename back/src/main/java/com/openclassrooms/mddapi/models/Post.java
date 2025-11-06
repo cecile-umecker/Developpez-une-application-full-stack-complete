@@ -6,6 +6,21 @@ import java.util.*;
 import jakarta.persistence.*;
 import lombok.*;
 
+/**
+ * Entity representing a post in the MDD API application.
+ * 
+ * A post is a piece of content created by a user within a specific topic.
+ * Users can write posts to share information, start discussions, or contribute
+ * to a topic. Each post can have multiple comments associated with it.
+ * 
+ * The post maintains bidirectional relationships with users (author), topics
+ * (category), and comments (feedback). The creation timestamp is automatically
+ * set when the post is persisted to the database.
+ * 
+ * This entity uses JPA annotations for persistence and Lombok annotations
+ * for reducing boilerplate code (getters, setters, constructors, builder pattern).
+ */
+
 @Entity
 @Table(name = "post")
 @Data 

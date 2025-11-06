@@ -6,6 +6,25 @@ import java.util.*;
 import jakarta.persistence.*;
 import lombok.*;
 
+/**
+ * Entity representing a user in the MDD API application.
+ * 
+ * A user is the central entity that can create posts and comments, as well as
+ * subscribe to topics of interest. Each user has unique credentials (username
+ * and email) for authentication and identification purposes.
+ * 
+ * The user entity maintains several relationships:
+ * - Many-to-many relationship with topics (subscriptions)
+ * - One-to-many relationship with posts (authored content)
+ * - One-to-many relationship with comments (user feedback)
+ * 
+ * Creation and update timestamps are automatically managed through JPA lifecycle
+ * callbacks. The password field should store encrypted passwords for security.
+ * 
+ * This entity uses JPA annotations for persistence and Lombok annotations
+ * for reducing boilerplate code (getters, setters, constructors, builder pattern).
+ */
+
 @Entity
 @Table(name = "user")
 @Data
