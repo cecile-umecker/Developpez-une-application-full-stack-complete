@@ -8,6 +8,10 @@ import com.openclassrooms.mddapi.dto.MessageDTO;
 import com.openclassrooms.mddapi.dto.RegisterDTO;
 import com.openclassrooms.mddapi.services.AuthService;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -15,10 +19,16 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
+@Tag(name = "Authentication", description = "Endpoints for user authentication and registration")
 public class AuthController {
   
   private final AuthService authService;
 
+    @Operation(summary = "Login user", description = "Authenticate a user and set JWT cookies")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Login successful"),
+        @ApiResponse(responseCode = "401", description = "Invalid credentials")
+    })
     @PostMapping("/login")
     public ResponseEntity<MessageDTO> login(@RequestBody LoginDTO request, HttpServletResponse response) {
         try {
@@ -29,6 +39,11 @@ public class AuthController {
         }
     }
 
+    @Operation(summary = "Register user", description = "Register a new account")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "201", description = "Registration successful"),
+        @ApiResponse(responseCode = "409", description = "User already exists")
+    })
     @PostMapping("/register")
     public ResponseEntity<MessageDTO> register(@RequestBody RegisterDTO request) {
         try {
@@ -41,6 +56,11 @@ public class AuthController {
         }
     }
 
+    @Operation(summary = "Refresh token", description = "Generate a new access token using the refresh token cookie")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Token refreshed successfully"),
+        @ApiResponse(responseCode = "401", description = "Invalid or missing refresh token")
+    })
     @PostMapping("/refresh")
     public ResponseEntity<?> refresh(HttpServletRequest request, HttpServletResponse response) {
         authService.refreshToken(request, response);
