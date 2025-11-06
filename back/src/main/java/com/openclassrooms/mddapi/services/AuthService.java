@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 
 import com.openclassrooms.mddapi.Utils.CookieUtil;
 import com.openclassrooms.mddapi.dto.LoginDTO;
-import com.openclassrooms.mddapi.dto.LoginResponseDTO;
 import com.openclassrooms.mddapi.dto.RegisterDTO;
 import com.openclassrooms.mddapi.models.User;
 import com.openclassrooms.mddapi.repository.UserRepository;
@@ -33,7 +32,7 @@ public class AuthService {
         this.jwtService = jwtService;
     }
 
-    public LoginResponseDTO login(LoginDTO request) {
+    public void login(LoginDTO request, HttpServletResponse response) {
         User user = userRepository.findByUsernameOrEmail(request.getLogin(), request.getLogin())
                 .orElseThrow(() -> new RuntimeException("Invalid credentials"));
 
@@ -44,7 +43,7 @@ public class AuthService {
         String accessToken = jwtService.generateToken(user.getId().toString(), false);
         String refreshToken = jwtService.generateToken(user.getId().toString(), true);
 
-        return new LoginResponseDTO(accessToken, refreshToken, "Login successful");
+        CookieUtil.addCookies(response, accessToken, refreshToken);
     }
 
     public void register(RegisterDTO request) {
@@ -65,34 +64,41 @@ public class AuthService {
 
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) {
         Cookie[] cookies = request.getCookies();
+
         if (cookies == null) throw new RuntimeException("No cookies found");
 
-        // Récupération du refreshToken depuis les cookies
         String refreshToken = Arrays.stream(cookies)
-                .filter(c -> "refreshToken".equals(c.getName()))
+                .filter(c -> "refresh_token".equals(c.getName()))
                 .findFirst()
                 .map(Cookie::getValue)
                 .orElseThrow(() -> new RuntimeException("Refresh token not found"));
 
-        // Extraction de l'identifiant de l'utilisateur depuis le token
+
+        // Extraction de l'ID utilisateur depuis le token
         String userId = jwtService.extractUserId(refreshToken);
+
+        // Vérification que l'ID correspond bien à un utilisateur existant
+        boolean exists = userRepository.findById(Long.parseLong(userId)).isPresent();
+
+        if (!exists) {
+            throw new RuntimeException("User not found");
+        }
 
         // Vérification de la validité du token
         if (!jwtService.isTokenValid(refreshToken, userId)) {
             throw new RuntimeException("Invalid refresh token");
         }
 
-        // Récupération de l'utilisateur en base
-        var user = userRepository.findByEmail(userId)
+        // Récupération de l'utilisateur
+        var user = userRepository.findById(Long.parseLong(userId))
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         // Génération des nouveaux tokens
-        String newAccessToken = jwtService.generateToken(user.getEmail(), false); // 1h
-        String newRefreshToken = jwtService.generateToken(user.getEmail(), true); // 7 jours
+        String newAccessToken = jwtService.generateToken(user.getId().toString(), false);
+        String newRefreshToken = jwtService.generateToken(user.getId().toString(), true);
 
         // Ajout des cookies à la réponse
         CookieUtil.addCookies(response, newAccessToken, newRefreshToken);
     }
-
 }
 

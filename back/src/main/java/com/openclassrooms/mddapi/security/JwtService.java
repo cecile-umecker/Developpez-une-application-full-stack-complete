@@ -3,7 +3,6 @@ package com.openclassrooms.mddapi.security;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import io.jsonwebtoken.Jwts;

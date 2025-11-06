@@ -6,12 +6,12 @@ import jakarta.servlet.http.HttpServletResponse;
 public class CookieUtil {
 
     public static void addCookies(HttpServletResponse response, String accessToken, String refreshToken) {
-        Cookie accessCookie = new Cookie("accessToken", accessToken);
+        Cookie accessCookie = new Cookie("access_token", accessToken);
         accessCookie.setHttpOnly(true);
         accessCookie.setPath("/"); // accessible sur toutes les routes
         accessCookie.setMaxAge(60 * 60); // 1h en secondes
 
-        Cookie refreshCookie = new Cookie("refreshToken", refreshToken);
+        Cookie refreshCookie = new Cookie("refresh_token", refreshToken);
         refreshCookie.setHttpOnly(true);
         refreshCookie.setPath("/");
         refreshCookie.setMaxAge(7 * 24 * 60 * 60); // 7 jours
@@ -21,12 +21,12 @@ public class CookieUtil {
     }
 
     public static void clearCookies(HttpServletResponse response) {
-        Cookie accessCookie = new Cookie("accessToken", null);
+        Cookie accessCookie = new Cookie("access_token", null);
         accessCookie.setHttpOnly(true);
         accessCookie.setPath("/");
         accessCookie.setMaxAge(0);
 
-        Cookie refreshCookie = new Cookie("refreshToken", null);
+        Cookie refreshCookie = new Cookie("refresh_token", null);
         refreshCookie.setHttpOnly(true);
         refreshCookie.setPath("/");
         refreshCookie.setMaxAge(0);

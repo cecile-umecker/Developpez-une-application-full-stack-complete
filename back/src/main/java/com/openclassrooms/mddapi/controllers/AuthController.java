@@ -1,11 +1,9 @@
 package com.openclassrooms.mddapi.controllers;
 
-import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.openclassrooms.mddapi.dto.LoginDTO;
-import com.openclassrooms.mddapi.dto.LoginResponseDTO;
 import com.openclassrooms.mddapi.dto.MessageDTO;
 import com.openclassrooms.mddapi.dto.RegisterDTO;
 import com.openclassrooms.mddapi.services.AuthService;
@@ -22,34 +20,12 @@ public class AuthController {
   private final AuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity<MessageDTO> login(@RequestBody LoginDTO request) {
+    public ResponseEntity<MessageDTO> login(@RequestBody LoginDTO request, HttpServletResponse response) {
         try {
-            LoginResponseDTO tokens = authService.login(request);
-
-            ResponseCookie accessCookie = ResponseCookie.from("access_token", tokens.getAccessToken())
-                    .httpOnly(true)
-                    .secure(false) // true en prod HTTPS
-                    .path("/")
-                    .maxAge(60 * 60) // 1h
-                    .sameSite("Strict")
-                    .build();
-
-            ResponseCookie refreshCookie = ResponseCookie.from("refresh_token", tokens.getRefreshToken())
-                    .httpOnly(true)
-                    .secure(false)
-                    .path("/")
-                    .maxAge(7 * 24 * 60 * 60) // 7 jours
-                    .sameSite("Strict")
-                    .build();
-
-            return ResponseEntity.ok()
-                    .header("Set-Cookie", accessCookie.toString())
-                    .header("Set-Cookie", refreshCookie.toString())
-                    .body(new MessageDTO("Login successful"));
-
+            authService.login(request, response);
+            return ResponseEntity.ok(new MessageDTO("Login successful"));
         } catch (RuntimeException e) {
-            return ResponseEntity.status(401)
-                    .body(new MessageDTO(e.getMessage()));
+            return ResponseEntity.status(401).body(new MessageDTO(e.getMessage()));
         }
     }
 
