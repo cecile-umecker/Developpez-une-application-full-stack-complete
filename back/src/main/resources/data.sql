@@ -14,10 +14,17 @@ VALUES
 ON DUPLICATE KEY UPDATE id=id;
 
 -- Relations user_topic
-INSERT INTO user_topic (user_id, topic_id) VALUES (1, 1)
-ON DUPLICATE KEY UPDATE user_id=user_id;
-INSERT INTO user_topic (user_id, topic_id) VALUES (2, 2)
-ON DUPLICATE KEY UPDATE user_id=user_id;
+INSERT INTO user_topic (user_id, topic_id)
+SELECT 1, 1
+WHERE NOT EXISTS (
+    SELECT 1 FROM user_topic WHERE user_id = 1 AND topic_id = 1
+);
+
+INSERT INTO user_topic (user_id, topic_id)
+SELECT 2, 2
+WHERE NOT EXISTS (
+    SELECT 1 FROM user_topic WHERE user_id = 2 AND topic_id = 2
+);
 
 -- Posts
 INSERT INTO post (id, title, content, user_id, topic_id, created_at)
