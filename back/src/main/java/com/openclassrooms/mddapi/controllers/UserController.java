@@ -10,7 +10,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
 
 @RestController
 @RequestMapping("/user")
@@ -50,20 +49,5 @@ public class UserController {
     ) {
         UserResponseDTO updatedUser = userService.updateCurrentUser(userUpdateRequestDTO);
         return ResponseEntity.ok(updatedUser);
-    }
-
-    @Operation(
-        summary = "Get subscribed topics",
-        description = "Returns a list of topics the currently authenticated user is subscribed to",
-        responses = {
-            @ApiResponse(responseCode = "200", description = "List of topics retrieved successfully",
-                content = @Content(schema = @Schema(implementation = TopicResponseDTO.class))),
-            @ApiResponse(responseCode = "401", description = "Unauthorized, token missing or invalid")
-        }
-    )
-    @GetMapping("/me/subscriptions")
-    public ResponseEntity<List<TopicResponseDTO>> getUserSubscriptions() {
-        List<TopicResponseDTO> subscriptions = userService.getUserSubscriptions();
-        return ResponseEntity.ok(subscriptions);
     }
 }

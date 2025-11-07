@@ -11,9 +11,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 @Service
 @RequiredArgsConstructor
 public class UserService {
@@ -53,15 +50,8 @@ public class UserService {
     return mapToUserResponseDTO(updatedUser);
   }
 
-  public List<TopicResponseDTO> getUserSubscriptions() {
-      User user = getAuthenticatedUser();
-      return user.getTopics()
-                .stream()
-                .map(this::mapToTopicResponseDTO)
-                .collect(Collectors.toList());
-  }
 
-  private User getAuthenticatedUser() {
+  User getAuthenticatedUser() {
     // L'identifiant est stocké dans le JWT
     String userIdStr = SecurityContextHolder.getContext().getAuthentication().getName();
     Long userId = Long.valueOf(userIdStr);
@@ -73,19 +63,10 @@ public class UserService {
             ));
   }
 
-
   private UserResponseDTO mapToUserResponseDTO(User user) {
       UserResponseDTO dto = new UserResponseDTO();
       dto.setUsername(user.getUsername());
       dto.setEmail(user.getEmail());
-      return dto;
-  }
-
-  private TopicResponseDTO mapToTopicResponseDTO(Topic topic) {
-      TopicResponseDTO dto = new TopicResponseDTO();
-      dto.setId(topic.getId());
-      dto.setTitle(topic.getTitle());
-      dto.setDescription(topic.getDescription());
       return dto;
   }
 }
