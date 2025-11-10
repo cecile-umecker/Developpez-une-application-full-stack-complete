@@ -11,6 +11,25 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * Controller handling post-related endpoints for the MDD API.
+ * 
+ * This controller provides RESTful endpoints for managing posts and their associated
+ * comments. Posts are the main content items created by users within topics, allowing
+ * for discussions and information sharing.
+ * 
+ * Key functionalities:
+ * - Retrieve individual posts by ID
+ * - Create new posts within topics
+ * - Retrieve comments for a specific post (paginated)
+ * - Add comments to posts
+ * 
+ * All endpoints under this controller require authentication and are mapped
+ * under the "/post" path.
+ * 
+ * @author Cécile UMECKER
+ 
+ */
 @RestController
 @RequestMapping("/post")
 @RequiredArgsConstructor
@@ -18,21 +37,49 @@ public class PostController {
 
     private final PostService postService;
 
-    // GET détail d’un post ⇒ /api/post/{id}
+    /**
+     * Retrieves a specific post by its unique identifier.
+     * 
+     * This endpoint fetches detailed information about a post including its title,
+     * content, author, topic, and creation date.
+     * 
+     * @param id the unique identifier of the post to retrieve
+     * @return ResponseEntity containing the PostResponseDTO with post details (200 OK)
+     */
     @GetMapping("/{id}")
     public ResponseEntity<PostResponseDTO> getPostById(@PathVariable Long id) {
         PostResponseDTO post = postService.getPostById(id);
         return ResponseEntity.ok(post);
     }
 
-    // POST écrire un post ⇒ /api/post
+    /**
+     * Creates a new post within a specific topic.
+     * 
+     * This endpoint allows authenticated users to create new posts with a title
+     * and content, associated with a particular topic. The post is automatically
+     * linked to the authenticated user as the author.
+     * 
+     * @param postRequest the post creation request containing title, content, and topic ID
+     * @return ResponseEntity containing the created PostResponseDTO (200 OK)
+     */
     @PostMapping
     public ResponseEntity<PostResponseDTO> createPost(@RequestBody PostRequestDTO postRequest) {
         PostResponseDTO post = postService.createPost(postRequest);
         return ResponseEntity.ok(post);
     }
 
-    // GET récupère les commentaires d’un post ⇒ /api/post/{id}/comments
+    /**
+     * Retrieves all comments for a specific post with pagination.
+     * 
+     * This endpoint returns a paginated list of comments associated with the specified
+     * post. Comments are ordered by creation date, allowing users to follow the
+     * discussion chronologically. Pagination improves performance for posts with
+     * many comments.
+     * 
+     * @param id the unique identifier of the post
+     * @param pageable pagination parameters (page number, size, sorting)
+     * @return ResponseEntity containing a Page of CommentResponseDTO objects (200 OK)
+     */
     @GetMapping("/{id}/comments")
     public ResponseEntity<Page<CommentResponseDTO>> getCommentsByPost(
             @PathVariable Long id,
@@ -41,7 +88,17 @@ public class PostController {
         return ResponseEntity.ok(comments);
     }
 
-    // POST écrire un commentaire sur un post ⇒ /api/post/{id}/comments
+    /**
+     * Adds a new comment to a specific post.
+     * 
+     * This endpoint allows authenticated users to add comments to existing posts,
+     * facilitating discussions and feedback. The comment is automatically linked
+     * to the authenticated user as the author and the specified post.
+     * 
+     * @param id the unique identifier of the post to comment on
+     * @param commentRequest the comment creation request containing the comment content
+     * @return ResponseEntity containing the created CommentResponseDTO (200 OK)
+     */
     @PostMapping("/{id}/comments")
     public ResponseEntity<CommentResponseDTO> addCommentToPost(
             @PathVariable Long id,

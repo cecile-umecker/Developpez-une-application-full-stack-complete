@@ -23,6 +23,9 @@ import lombok.*;
  * 
  * This entity uses JPA annotations for persistence and Lombok annotations
  * for reducing boilerplate code (getters, setters, constructors, builder pattern).
+ * 
+ * @author Cécile UMECKER
+ 
  */
 
 @Entity
@@ -52,25 +55,45 @@ public class User {
   @Column(nullable = false)
   private LocalDateTime updatedAt;
 
+  /**
+   * List of topics the user is subscribed to.
+   * Represents a many-to-many relationship with the Topic entity.
+   */
   @ManyToMany
   @JoinTable(name = "user_topic", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "topic_id"))
   @Builder.Default
   private List<Topic> topics = new ArrayList<>();
 
+  /**
+   * List of posts created by this user.
+   * Represents a one-to-many relationship with the Post entity.
+   */
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
   @Builder.Default
   private List<Post> posts = new ArrayList<>();
 
+  /**
+   * List of comments created by this user.
+   * Represents a one-to-many relationship with the Comment entity.
+   */
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
   @Builder.Default
   private List<Comment> comments = new ArrayList<>();
 
+  /**
+   * Lifecycle callback method executed before persisting a new user entity.
+   * Automatically sets the creation and update timestamps to the current date and time.
+   */
   @PrePersist
   protected void onCreate() {
     this.createdAt = LocalDateTime.now();
     this.updatedAt = LocalDateTime.now();
   } 
 
+  /**
+   * Lifecycle callback method executed before updating an existing user entity.
+   * Automatically updates the update timestamp to the current date and time.
+   */
   @PreUpdate
   protected void onUpdate() {
     this.updatedAt = LocalDateTime.now();

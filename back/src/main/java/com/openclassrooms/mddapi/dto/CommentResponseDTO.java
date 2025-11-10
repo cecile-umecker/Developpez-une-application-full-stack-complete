@@ -5,6 +5,15 @@ import lombok.Data;
 
 import java.time.LocalDateTime;
 
+/**
+ * Data Transfer Object for comment responses.
+ * 
+ * This DTO encapsulates comment data returned to clients, including
+ * the comment content, author information, and timestamps.
+ * 
+ * @author Cécile UMECKER
+ 
+ */
 @Data
 @Builder
 public class CommentResponseDTO {

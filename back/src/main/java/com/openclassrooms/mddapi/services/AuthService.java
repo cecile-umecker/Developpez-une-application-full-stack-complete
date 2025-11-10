@@ -34,6 +34,9 @@ import jakarta.servlet.http.Cookie;
  * system (access token and refresh token) to balance security and user experience.
  * All authentication operations validate user credentials and token validity before
  * proceeding.
+ * 
+ * @author Cécile UMECKER
+ 
  */
 
 @Service
@@ -51,6 +54,17 @@ public class AuthService {
         this.jwtService = jwtService;
     }
 
+    /**
+     * Authenticates a user with their credentials and generates JWT tokens.
+     * 
+     * This method validates the user's login credentials (username or email with password)
+     * against stored values. If valid, it generates both access and refresh tokens and
+     * stores them in HTTP-only cookies in the response.
+     * 
+     * @param request the login request containing username/email and password
+     * @param response the HTTP response where authentication cookies will be set
+     * @throws RuntimeException if credentials are invalid or user is not found
+     */
     public void login(LoginDTO request, HttpServletResponse response) {
         User user = userRepository.findByUsernameOrEmail(request.getLogin(), request.getLogin())
                 .orElseThrow(() -> new RuntimeException("Invalid credentials"));
@@ -65,6 +79,16 @@ public class AuthService {
         CookieUtil.addCookies(response, accessToken, refreshToken);
     }
 
+    /**
+     * Registers a new user in the system.
+     * 
+     * This method creates a new user account with the provided registration details.
+     * It validates that both username and email are unique, encrypts the password
+     * using BCrypt, and persists the new user to the database.
+     * 
+     * @param request the registration request containing username, email, and password
+     * @throws RuntimeException if username or email already exists
+     */
     public void register(RegisterDTO request) {
         if (userRepository.findByUsernameOrEmail(request.getUsername(), request.getEmail()).isPresent()) {
             throw new RuntimeException("Username or email already exists");
@@ -78,6 +102,18 @@ public class AuthService {
         userRepository.save(user);
     }
 
+    /**
+     * Refreshes the user's authentication tokens using a valid refresh token.
+     * 
+     * This method extracts the refresh token from the request cookies, validates it,
+     * verifies the associated user still exists, and generates new access and refresh
+     * tokens if all checks pass. The new tokens are stored in HTTP-only cookies,
+     * effectively extending the user's session.
+     * 
+     * @param request the HTTP request containing the refresh token cookie
+     * @param response the HTTP response where new authentication cookies will be set
+     * @throws RuntimeException if no cookies found, refresh token missing, invalid, or user not found
+     */
     public void refreshToken(HttpServletRequest request, HttpServletResponse response) {
         Cookie[] cookies = request.getCookies();
 

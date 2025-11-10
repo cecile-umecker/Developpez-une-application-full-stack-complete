@@ -4,17 +4,14 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 /**
- * Data Transfer Object (DTO) for handling login credentials.
- * This class is used to transfer login information between client and server.
+ * Data Transfer Object for user login requests.
  * 
- * The class uses Lombok's @Data annotation to automatically generate:
- * - getters
- * - setters
- * - toString
- * - equals
- * - hashCode
+ * This DTO encapsulates the credentials required for user authentication.
+ * The login field accepts either username or email for flexible authentication.
+ * 
+ * @author Cécile UMECKER
+ 
  */
-
 @Data
 public class LoginDTO {
 

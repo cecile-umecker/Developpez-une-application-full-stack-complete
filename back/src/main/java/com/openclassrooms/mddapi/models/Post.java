@@ -19,6 +19,9 @@ import lombok.*;
  * 
  * This entity uses JPA annotations for persistence and Lombok annotations
  * for reducing boilerplate code (getters, setters, constructors, builder pattern).
+ * 
+ * @author Cécile UMECKER
+ 
  */
 
 @Entity
@@ -39,10 +42,18 @@ public class Post {
   @Column(nullable = false)
   private String content;
 
+  /**
+   * The user who authored this post.
+   * Represents a many-to-one relationship with the User entity.
+   */
   @ManyToOne
   @JoinColumn(name = "user_id", nullable = false)
   private User user;
 
+  /**
+   * The topic this post belongs to.
+   * Represents a many-to-one relationship with the Topic entity.
+   */
   @ManyToOne
   @JoinColumn(name = "topic_id", nullable = false)
   private Topic topic;
@@ -50,10 +61,19 @@ public class Post {
   @Column(nullable = false, updatable = false)
   private LocalDateTime createdAt;
 
+  /**
+   * List of comments associated with this post.
+   * Represents a one-to-many relationship with the Comment entity.
+   * Deleting a post will cascade delete all associated comments.
+   */
   @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
   @Builder.Default
   private List<Comment> comments = new ArrayList<>();
 
+  /**
+   * JPA lifecycle callback that automatically sets the creation timestamp.
+   * This method is invoked before the entity is persisted to the database.
+   */
   @PrePersist
   protected void onCreate() {
     this.createdAt = LocalDateTime.now();

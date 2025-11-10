@@ -18,6 +18,9 @@ import lombok.*;
  * 
  * This entity uses JPA annotations for persistence and Lombok annotations
  * for reducing boilerplate code (getters, setters, constructors, builder pattern).
+ * 
+ * @author Cécile UMECKER
+ 
  */
 
 @Entity
@@ -38,6 +41,11 @@ public class Topic {
   @Column(nullable = false)
   private String description;
 
+  /**
+   * List of posts associated with this topic.
+   * Represents a one-to-many relationship with the Post entity.
+   * Deleting a topic will cascade delete all associated posts.
+   */
   @OneToMany(mappedBy = "topic", cascade = CascadeType.ALL, orphanRemoval = true)
   @Builder.Default
   private List<Post> posts = new ArrayList<>();

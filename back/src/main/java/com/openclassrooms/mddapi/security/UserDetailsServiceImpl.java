@@ -23,6 +23,9 @@ import lombok.RequiredArgsConstructor;
  * 
  * This class is essential for Spring Security's authentication mechanism, as it
  * retrieves user credentials and authorities during the login process.
+ * 
+ * @author Cécile UMECKER
+ 
  */
 
 @Service
@@ -31,6 +34,21 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     private final UserRepository userRepository;
 
+    /**
+     * Loads user details by username or email for authentication.
+     * 
+     * This method is called by Spring Security during authentication to retrieve
+     * user credentials. It searches for a user by either username or email (the
+     * login parameter can be either), making authentication more flexible.
+     * 
+     * The method converts the application's User entity to Spring Security's
+     * UserDetails format, containing email (used as username), password, and
+     * authorities (currently empty, as role-based authorization is not implemented).
+     * 
+     * @param login the username or email to search for
+     * @return UserDetails containing user credentials and authorities
+     * @throws UsernameNotFoundException if no user is found with the given username or email
+     */
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
         User user = userRepository.findByUsernameOrEmail(login, login)

@@ -32,6 +32,9 @@ import lombok.RequiredArgsConstructor;
  * 
  * The security filter chain processes requests before Spring's default
  * UsernamePasswordAuthenticationFilter to validate JWT tokens from cookies.
+ * 
+ * @author Cécile UMECKER
+ 
  */
 
 @Configuration
@@ -41,11 +44,32 @@ public class SecurityConfig {
     private final UserDetailsService userDetailsService;
     private final JwtService jwtService;
 
+    /**
+     * Provides a BCrypt password encoder bean for secure password hashing.
+     * 
+     * This encoder is used throughout the application to hash passwords before
+     * storage and to verify passwords during authentication. BCrypt is a strong
+     * adaptive hash function that includes a salt and is resistant to brute-force
+     * attacks.
+     * 
+     * @return PasswordEncoder instance using BCrypt algorithm
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * Configures and provides the authentication manager bean.
+     * 
+     * This method sets up the authentication manager with the custom UserDetailsService
+     * for loading user information and the BCrypt password encoder for password verification.
+     * The authentication manager is used during login to validate user credentials.
+     * 
+     * @param http the HttpSecurity configuration object
+     * @return configured AuthenticationManager instance
+     * @throws Exception if configuration fails
+     */
     @Bean
     public AuthenticationManager authenticationManager(HttpSecurity http) throws Exception {
         AuthenticationManagerBuilder authBuilder = http.getSharedObject(AuthenticationManagerBuilder.class);
@@ -54,6 +78,23 @@ public class SecurityConfig {
         return authBuilder.build();
     }
 
+    /**
+     * Configures the security filter chain for HTTP requests.
+     * 
+     * This method defines the complete security configuration including:
+     * - CSRF protection disabled (suitable for stateless JWT authentication)
+     * - Stateless session management (no server-side sessions)
+     * - Public access to authentication endpoints (register, login, refresh)
+     * - All other endpoints require authentication
+     * - Custom JWT authentication filter added before standard authentication
+     * 
+     * The filter chain intercepts all requests and applies security rules before
+     * they reach the controllers.
+     * 
+     * @param http the HttpSecurity configuration object
+     * @return configured SecurityFilterChain
+     * @throws Exception if configuration fails
+     */
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -69,6 +110,16 @@ public class SecurityConfig {
         return http.build();
     }
 
+    /**
+     * Creates and provides the JWT authentication filter bean.
+     * 
+     * This method instantiates the custom JWT authentication filter with the
+     * required dependencies (JwtService and UserDetailsService). The filter
+     * is responsible for extracting and validating JWT tokens from cookies
+     * on each request.
+     * 
+     * @return configured JwtAuthenticationFilter instance
+     */
     @Bean
     public JwtAuthenticationFilter jwtAuthenticationFilter() {
         return new JwtAuthenticationFilter(jwtService, userDetailsService);

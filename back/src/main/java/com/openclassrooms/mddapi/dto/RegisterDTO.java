@@ -7,24 +7,14 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 /**
- * Data Transfer Object (DTO) for user registration.
- * This class encapsulates the data required for registering a new user.
+ * Data Transfer Object for user registration requests.
  * 
- * The class uses Lombok @Data annotation to automatically generate:
- * - getters and setters
- * - equals() and hashCode() methods
- * - toString() method
+ * This DTO encapsulates the data required to create a new user account,
+ * including validation constraints for username, email, and password.
  * 
- * Fields:
- * @property username Required field for user's username
- * @property email Required field for user's email address (must be valid email format)
- * @property password Required field for user's password
- * 
- * All fields are validated using Jakarta validation constraints:
- * - @NotBlank ensures fields are not empty or null
- * - @Email ensures email field contains valid email format
+ * @author Cécile UMECKER
+ 
  */
-
 @Data
 public class RegisterDTO {
 

@@ -3,13 +3,13 @@ package com.openclassrooms.mddapi.dto;
 import lombok.*;
 
 /**
- * Data Transfer Object (DTO) for message-related operations.
- * This class is used to transfer message data between different layers of the application.
+ * Data Transfer Object for generic message responses.
  * 
- * The class uses Lombok annotations to automatically generate:
- * - Getters and setters (@Data)
- * - All-args constructor (@AllArgsConstructor)
- * - No-args constructor (@NoArgsConstructor)
+ * This DTO is used to send simple text messages back to clients,
+ * typically for success confirmations or informational responses.
+ * 
+ * @author Cécile UMECKER
+ 
  */
 
 @Data

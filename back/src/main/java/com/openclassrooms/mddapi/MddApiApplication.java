@@ -20,11 +20,28 @@ import io.github.cdimascio.dotenv.Dotenv;
  * The @SpringBootApplication annotation enables auto-configuration, component scanning,
  * and configuration properties, making this a complete Spring Boot application ready
  * to serve HTTP requests.
+ * 
+ * @author Cécile UMECKER
+ 
  */
 
 @SpringBootApplication
 public class MddApiApplication {
 
+	/**
+	 * Main entry point for the MDD API application.
+	 * 
+	 * This method performs the following initialization steps:
+	 * 1. Loads environment variables from the .env file using Dotenv library
+	 * 2. Sets system properties for database configuration (URL, user, password)
+	 * 3. Sets system properties for JWT configuration (secret key, expiration time)
+	 * 4. Launches the Spring Boot application context
+	 * 
+	 * Environment variables are converted to system properties to make them accessible
+	 * throughout the application via @Value annotations or System.getProperty() calls.
+	 * 
+	 * @param args command-line arguments passed to the application
+	 */
 	public static void main(String[] args) {
 		Dotenv dotenv = Dotenv.load();
 			System.setProperty("DB_URL", dotenv.get("DB_URL"));

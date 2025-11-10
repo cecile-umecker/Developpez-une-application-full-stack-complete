@@ -14,6 +14,9 @@ import lombok.*;
  * 
  * This entity uses JPA annotations for persistence and Lombok annotations
  * for reducing boilerplate code (getters, setters, constructors, builder pattern).
+ * 
+ * @author Cécile UMECKER
+ 
  */
 
 @Entity
@@ -31,10 +34,18 @@ public class Comment {
   @Column(nullable = false)
   private String content;
 
+  /**
+   * The post this comment belongs to.
+   * Represents a many-to-one relationship with the Post entity.
+   */
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "post_id", nullable = false)
   private Post post;
 
+  /**
+   * The user who authored this comment.
+   * Represents a many-to-one relationship with the User entity.
+   */
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "user_id", nullable = false)
   private User user;
@@ -42,6 +53,10 @@ public class Comment {
   @Column(nullable = false, updatable = false)
   private LocalDateTime createdAt;
 
+  /**
+   * JPA lifecycle callback that automatically sets the creation timestamp.
+   * This method is invoked before the entity is persisted to the database.
+   */
   @PrePersist
   protected void onCreate() {
     this.createdAt = LocalDateTime.now();
