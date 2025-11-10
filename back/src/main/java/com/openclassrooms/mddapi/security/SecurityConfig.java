@@ -29,7 +29,6 @@ import lombok.RequiredArgsConstructor;
  * - Public endpoints for authentication operations (register, login, refresh)
  * - Protected endpoints requiring valid JWT authentication
  * - CSRF protection disabled (appropriate for stateless JWT architecture)
- * - Swagger/OpenAPI documentation endpoints publicly accessible
  * 
  * The security filter chain processes requests before Spring's default
  * UsernamePasswordAuthenticationFilter to validate JWT tokens from cookies.
@@ -64,7 +63,6 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.POST, "/auth/register").permitAll()
                 .requestMatchers(HttpMethod.POST, "/auth/login").permitAll()
                 .requestMatchers(HttpMethod.POST, "/auth/refresh").permitAll()
-                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
                 .anyRequest().authenticated()
             )
             .addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
