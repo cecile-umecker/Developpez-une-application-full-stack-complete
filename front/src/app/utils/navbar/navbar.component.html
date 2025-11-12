@@ -1,0 +1,13 @@
+<nav class="navbar">
+  <div id="logo">
+    <img src="assets/logo_p6.png" alt="Logo" />
+  </div>
+  <div id="links">
+    <ng-container *ngIf="isLoggedIn">
+      <a (click)="logout()" class="logout">Se déconnecter</a>
+      <a routerLink="/home">Articles</a>
+      <a routerLink="/topics">Thèmes</a>
+      <a routerLink="/profile">Profil</a>
+    </ng-container>
+  </div>
+</nav>

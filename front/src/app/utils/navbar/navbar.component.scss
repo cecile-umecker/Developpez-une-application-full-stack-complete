@@ -1,0 +1,22 @@
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 94px;
+  border-bottom: 1px solid #000000;
+}
+
+img {
+  width: 140px;
+}
+
+#logo {
+  margin-left: 20px;
+}
+
+#links {
+  width: 40%;
+  display: flex;
+  justify-content: space-around;
+
+}
