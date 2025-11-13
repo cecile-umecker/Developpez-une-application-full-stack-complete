@@ -27,7 +27,7 @@ export class FeedService {
       .set('size', this.pageSize.toString())
       .set('sort', sortParam);
 
-    return this.http.get<Feed>('/api/feed', { params }).pipe(
+    return this.http.get<Feed>('/api/feed', { params, withCredentials: true }).pipe(
       tap(resp => {
         this.currentPage = resp.number + 1;
         this.lastPage = resp.last;

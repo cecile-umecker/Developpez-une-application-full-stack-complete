@@ -1,1 +1,39 @@
-<p>user-details works!</p>
+<h2>Profil utilisateur</h2>
+<div class="user-form">
+  <label for="username">Nom d'utilisateur</label>
+  <input
+    type="text"
+    id="username"
+    [(ngModel)]="editData.username"
+    [placeholder]="user.username"
+  />
+
+  <label for="email">Email</label>
+  <input
+    type="email"
+    id="email"
+    [(ngModel)]="editData.email"
+    [placeholder]="user.email"
+  />
+
+  <label for="password">Mot de passe</label>
+  <input
+    type="password"
+    id="password"
+    [(ngModel)]="editData.password"
+    placeholder="Mot de passe"
+  />
+
+  <button type="button" (click)="onSubmit()">Sauvegarder</button>
+</div>
+
+<h2>Mes abonnements</h2>
+<div class="user-subscription-list">
+  <div class="topic-card" *ngFor="let topic of subscriptions">
+    <p class="topic-title">{{ topic.title }}</p>
+    <p class="topic-description">{{ topic.description }}</p>
+    <button type="button" (click)="onUnsubscribe(topic.id)">
+      Se désabonner
+    </button>
+  </div>
+</div>
