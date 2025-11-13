@@ -1,1 +1,11 @@
-<p>topics works!</p>
+<div class="topic-list">
+  <div class="topic-card" *ngFor="let topic of topics">
+    <p>{{ topic.title }}</p>
+    <p>{{ topic.description }}</p>
+    <button 
+      [disabled]="topic.subscribed" 
+      (click)="!topic.subscribed && onSubscribe(topic.id)">
+      {{ topic.subscribed ? 'Déjà abonné' : 'S\'abonner' }}
+    </button>
+  </div>
+</div>
