@@ -5,7 +5,9 @@ import java.util.List;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.openclassrooms.mddapi.dto.FeedPostDTO;
 import com.openclassrooms.mddapi.models.Post;
@@ -54,15 +56,23 @@ public class FeedService {
      * @param size the number of posts per page
      * @return a Page containing FeedPostDTO objects with post previews
      */
-    public Page<FeedPostDTO> getFeed(int page, int size) {
+    public Page<FeedPostDTO> getFeed(int page, int size, @RequestParam(required = false) String sort) {
         User user = userService.getAuthenticatedUser();
         List<Long> subscribedTopicIds = user.getTopics().stream()
-                                           .map(Topic::getId)
-                                           .toList();
+                                        .map(Topic::getId)
+                                        .toList();
 
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable;
+        if (sort != null && !sort.isEmpty()) {
+            String[] parts = sort.split(",");
+            Sort.Direction direction = Sort.Direction.fromString(parts[1]);
+            pageable = PageRequest.of(page, size, Sort.by(direction, parts[0]));
+        } else {
+            pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"));
+        }
+
         return postRepository.findByTopicIdIn(subscribedTopicIds, pageable)
-                .map(this::mapToDTO);
+                            .map(this::mapToDTO);
     }
 
     /**

@@ -41,7 +41,8 @@ public class FeedController {
     @GetMapping
     public Page<FeedPostDTO> getFeed(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
-        return feedService.getFeed(page, size);
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String sort) {
+        return feedService.getFeed(page, size, sort);
     }
 }

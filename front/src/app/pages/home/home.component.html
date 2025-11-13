@@ -1,1 +1,15 @@
-<p>home works!</p>
+<button (click)="createPost()">Créer un article</button>
+<button (click)="toggleSort()">Trier par {{ sortAsc ? '▲' : '▼' }}</button>
+
+<!-- Liste des articles -->
+<div class="post-list">
+  <div *ngFor="let post of feed$ | async" class="post-card" (click)="viewPost(post.id)">
+    <h3>{{ post.title }}</h3>
+    <p>{{ post.createdAt | date:'short' }}</p>
+    <p>{{ post.authorName }}</p>
+    <p>{{ post.contentPreview }}</p>
+  </div>
+</div>
+
+<!-- Indicateur de chargement -->
+<div *ngIf="loading" class="loading">Chargement...</div>

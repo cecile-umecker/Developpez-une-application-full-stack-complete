@@ -31,7 +31,7 @@ export const routes: Routes = [
     canActivate: [localAuthGuard]
   },
   {
-    path: 'postDetails/:id',
+    path: 'post/:id',
     loadComponent: () => import('./pages/post/post.component').then(m => m.PostComponent),
     canActivate: [localAuthGuard]
   },
