@@ -1,6 +1,6 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, OnDestroy, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Observable } from 'rxjs';
+import { Subscription, Observable } from 'rxjs';
 import { FeedPost } from 'src/app/models/post.model';
 import { FeedService } from 'src/app/core/services/feed.service';
 import { Router } from '@angular/router';
@@ -12,30 +12,34 @@ import { Router } from '@angular/router';
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
   feed$: Observable<FeedPost[]>;
   loading = false;
+  private subscriptions = new Subscription();
 
   constructor(private feedService: FeedService, private router: Router) {
     this.feed$ = this.feedService.feed$;
   }
 
   ngOnInit() {
+    this.feedService.resetFeed();
     this.loadNext();
   }
 
   loadNext() {
     if (this.loading) return;
     this.loading = true;
-    this.feedService.loadNextPage().subscribe(() => {
+
+    const sub = this.feedService.loadNextPage().subscribe(() => {
       this.loading = false;
     });
+    this.subscriptions.add(sub);
   }
 
   @HostListener('window:scroll', [])
   onWindowScroll() {
     const scrollPosition = window.innerHeight + window.scrollY;
-    const threshold = document.body.offsetHeight - 300; // déclenche 300px avant le bas
+    const threshold = document.body.offsetHeight - 300;
     if (scrollPosition >= threshold) {
       this.loadNext();
     }
@@ -56,5 +60,9 @@ export class HomeComponent implements OnInit {
 
   viewPost(postId: number) {
     this.router.navigate(['/post', postId]);
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe(); // annule toutes les subscriptions
   }
 }

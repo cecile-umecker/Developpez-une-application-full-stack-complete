@@ -1,15 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { BehaviorSubject, Observable, map, tap } from 'rxjs';
-import { FeedPost } from 'src/app/models/post.model';
-
-interface FeedResponse {
-  content: FeedPost[];
-  number: number;
-  last: boolean;
-  totalPages: number;
-  // autres champs de pagination si besoin
-}
+import { FeedPost, Feed } from 'src/app/models/post.model';
 
 @Injectable({
   providedIn: 'root'
@@ -35,7 +27,7 @@ export class FeedService {
       .set('size', this.pageSize.toString())
       .set('sort', sortParam);
 
-    return this.http.get<FeedResponse>('/api/feed', { params }).pipe(
+    return this.http.get<Feed>('/api/feed', { params }).pipe(
       tap(resp => {
         this.currentPage = resp.number + 1;
         this.lastPage = resp.last;
