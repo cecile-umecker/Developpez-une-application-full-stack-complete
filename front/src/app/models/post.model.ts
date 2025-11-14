@@ -38,7 +38,7 @@ export interface Feed {
 }
 
 export interface DetailedPost {
-  id: string;
+  id: number;
   title: string;
   content: string;
   authorName: string;
@@ -47,7 +47,7 @@ export interface DetailedPost {
 }
 
 export interface NewPost {
-  title: string;
+  title: number;
   content: string;
-  topicId: string;
+  topicId: number;
 }
