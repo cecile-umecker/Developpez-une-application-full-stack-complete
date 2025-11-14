@@ -23,8 +23,8 @@ export class PostService {
     });
   }
 
-  getComments(postId: number): Observable<Page<DetailedComment>> {
-    return this.http.get<Page<DetailedComment>>(`/api/post/${postId}/comments`, {
+  getComments(postId: number): Observable<DetailedComment[]> {
+    return this.http.get<DetailedComment[]>(`/api/post/${postId}/comments`, {
       withCredentials: true
     });
   }

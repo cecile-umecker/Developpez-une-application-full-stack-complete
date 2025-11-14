@@ -26,13 +26,11 @@ export class CommentComponent implements OnInit {
   loadComments(): void {
     this.loadingComments = true;
     this.postService.getComments(this.postId).subscribe({
-      next: (page: Page<DetailedComment>) => {
-        this.comments = page.content;
+      next: (comments) => {
+        this.comments = comments;
         this.loadingComments = false;
       },
-      error: () => {
-        this.loadingComments = false;
-      }
+      error: () => this.loadingComments = false
     });
   }
 
