@@ -4,7 +4,9 @@ import com.openclassrooms.mddapi.dto.*;
 import com.openclassrooms.mddapi.models.*;
 import com.openclassrooms.mddapi.repository.*;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.*;
+
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.HttpStatus;
@@ -82,24 +84,24 @@ public class PostService {
     }
 
     /**
-     * Retrieves all comments for a specific post with pagination.
-     * 
-     * This method fetches comments associated with the specified post, ordered by
-     * creation date in ascending order (oldest first). Results are paginated to
-     * improve performance for posts with many comments.
-     * 
+     * Retrieves all comments for a specific post.
+     *
+     * This method fetches all comments associated with the specified post,
+     * ordered by creation date ascending, and returns them as a list.
+     *
      * @param postId the unique identifier of the post
-     * @param pageable pagination parameters (page number, size, sorting)
-     * @return Page containing CommentResponseDTO objects
+     * @return List of CommentResponseDTO
      * @throws ResponseStatusException with 404 status if post is not found
      */
-    public Page<CommentResponseDTO> getCommentsByPost(Long postId, Pageable pageable) {
+     public List<CommentResponseDTO> getCommentsByPost(Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Post not found"));
 
-        return commentRepository.findByPostOrderByCreatedAtAsc(post, pageable)
-                .map(this::mapToCommentResponseDTO);
-    }
+        return commentRepository.findByPostOrderByCreatedAtAsc(post)
+                .stream()
+                .map(this::mapToCommentResponseDTO)
+                .toList();
+     }
 
     /**
      * Adds a new comment to a specific post.

@@ -6,8 +6,9 @@ import com.openclassrooms.mddapi.dto.PostRequestDTO;
 import com.openclassrooms.mddapi.dto.PostResponseDTO;
 import com.openclassrooms.mddapi.services.PostService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
+
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -69,22 +70,18 @@ public class PostController {
     }
 
     /**
-     * Retrieves all comments for a specific post with pagination.
+     * Retrieves all comments for a specific post.
      * 
-     * This endpoint returns a paginated list of comments associated with the specified
+     * This endpoint returns a list of all comments associated with the specified
      * post. Comments are ordered by creation date, allowing users to follow the
-     * discussion chronologically. Pagination improves performance for posts with
-     * many comments.
+     * discussion chronologically. No pagination is applied.
      * 
      * @param id the unique identifier of the post
-     * @param pageable pagination parameters (page number, size, sorting)
-     * @return ResponseEntity containing a Page of CommentResponseDTO objects (200 OK)
+     * @return ResponseEntity containing a List of CommentResponseDTO objects (200 OK)
      */
     @GetMapping("/{id}/comments")
-    public ResponseEntity<Page<CommentResponseDTO>> getCommentsByPost(
-            @PathVariable Long id,
-            Pageable pageable) {
-        Page<CommentResponseDTO> comments = postService.getCommentsByPost(id, pageable);
+    public ResponseEntity<List<CommentResponseDTO>> getCommentsByPost(@PathVariable Long id) {
+        List<CommentResponseDTO> comments = postService.getCommentsByPost(id);
         return ResponseEntity.ok(comments);
     }
 
