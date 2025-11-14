@@ -30,7 +30,7 @@ export class PostService {
   }
 
   createComment(postId: number, data: NewComment): Observable<DetailedComment> {
-    return this.http.post<DetailedComment>(`/api/post/${postId}/comment`, data, {
+    return this.http.post<DetailedComment>(`/api/post/${postId}/comments`, data, {
       withCredentials: true
     });
   }
