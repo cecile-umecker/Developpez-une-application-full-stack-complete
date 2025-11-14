@@ -31,13 +31,13 @@ export const routes: Routes = [
     canActivate: [localAuthGuard]
   },
   {
-    path: 'post/:id',
-    loadComponent: () => import('./pages/post/post.component').then(m => m.PostComponent),
+    path: 'post/create',
+    loadComponent: () => import('./pages/post/create-post/create-post.component').then(m => m.CreatePostComponent),
     canActivate: [localAuthGuard]
   },
   {
-    path: 'post/create',
-    loadComponent: () => import('./pages/post/create-post/create-post.component').then(m => m.CreatePostComponent),
+    path: 'post/:id',
+    loadComponent: () => import('./pages/post/post.component').then(m => m.PostComponent),
     canActivate: [localAuthGuard]
   },
   { path: '**', redirectTo: '' }
