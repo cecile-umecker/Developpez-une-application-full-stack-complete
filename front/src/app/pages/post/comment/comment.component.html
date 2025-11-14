@@ -1,1 +1,10 @@
-<p>comment works!</p>
+<div *ngIf="loadingComments">Chargement des commentaires...</div>
+
+<div *ngIf="!loadingComments && comments.length === 0">
+  Aucun commentaire pour l'instant.
+</div>
+
+<div *ngFor="let comment of comments" class="comment">
+  <p>{{ comment.authorName }}</p>
+  <p>{{ comment.content }}</p>
+</div>

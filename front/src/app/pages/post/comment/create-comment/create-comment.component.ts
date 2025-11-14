@@ -8,7 +8,8 @@ import { NewComment } from 'src/app/models/comment.model';
   selector: 'app-create-comment',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
-  templateUrl: './create-comment.component.html'
+  templateUrl: './create-comment.component.html',
+  styleUrls: ['./create-comment.component.scss']
 })
 export class CreateCommentComponent {
 

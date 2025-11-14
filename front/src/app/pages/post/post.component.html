@@ -11,5 +11,5 @@
 
 <hr>
 <p>Commentaires</p>
-<app-comment></app-comment>
-<app-create-comment [postId]="postId"></app-create-comment>
+<app-comment #commentsComp [postId]="postId"></app-comment>
+<app-create-comment [postId]="postId" (commentCreated)="commentsComp.refresh()"></app-create-comment>
