@@ -1,1 +1,15 @@
-<p>post works!</p>
+<div *ngIf="loadingPost">Chargement du post...</div>
+<div *ngIf="!loadingPost && post">
+  <h1>{{ post.title }}</h1>
+  <p><em>{{ post.createdAt | date:'short' }}</em></p>
+  <p><strong></strong> {{ post.authorName }}</p>
+  <p><strong></strong> {{ post.topicTitle }}</p>
+  <div class="content">
+    {{ post.content }}
+  </div>
+</div>
+
+<hr>
+<p>Commentaires</p>
+<app-comment></app-comment>
+<app-create-comment></app-create-comment>
