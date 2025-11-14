@@ -1,15 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { NgFor, NgIf } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { TopicService } from 'src/app/core/services/topic.service';
 import { PostService } from 'src/app/core/services/post.service';
 import { NewPost } from 'src/app/models/post.model';
 import { Router } from '@angular/router';
+import { GoBackComponent } from 'src/app/utils/go-back/go-back.component';
 
 @Component({
   selector: 'app-create-post',
   standalone: true,
-  imports: [ReactiveFormsModule, NgFor, NgIf],
+  imports: [CommonModule, ReactiveFormsModule, GoBackComponent],
   templateUrl: './create-post.component.html',
   styleUrls: ['./create-post.component.scss']
 })

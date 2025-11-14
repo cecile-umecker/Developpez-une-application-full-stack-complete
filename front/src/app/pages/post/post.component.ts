@@ -5,11 +5,12 @@ import { PostService } from 'src/app/core/services/post.service';
 import { DetailedPost } from 'src/app/models/post.model';
 import { CommentComponent } from './comment/comment.component';
 import { CreateCommentComponent } from './comment/create-comment/create-comment.component';
+import { GoBackComponent } from 'src/app/utils/go-back/go-back.component';
 
 @Component({
   selector: 'app-post',
   standalone: true,
-  imports: [CommonModule, CommentComponent, CreateCommentComponent],
+  imports: [CommonModule, CommentComponent, CreateCommentComponent, GoBackComponent],
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.scss']
 })

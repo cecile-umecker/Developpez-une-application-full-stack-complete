@@ -3,12 +3,13 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { GoBackComponent } from 'src/app/utils/go-back/go-back.component';
 import { passwordStrengthValidator } from 'src/app/utils/validators/passwordStrengthValidator';
 
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, GoBackComponent],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
