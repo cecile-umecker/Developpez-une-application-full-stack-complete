@@ -5,3 +5,27 @@
   align-items: center;
   flex-direction: column;
 }
+
+.button-group {
+  display: flex;
+  gap: 50px;
+  margin-top: 16px;
+}
+
+@media (max-width: 768px) {
+
+  .center {
+    justify-content: flex-start;
+    margin-top: 80px;
+  }
+
+  img {
+    width: 225px;
+    margin-bottom: 40px;
+  }
+
+  .button-group {
+    flex-direction: column;
+    gap: 30px;
+  }
+}
