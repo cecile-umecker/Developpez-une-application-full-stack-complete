@@ -2,11 +2,12 @@ import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PostService } from 'src/app/core/services/post.service';
 import { DetailedComment, Page } from 'src/app/models/comment.model';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-comment',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, MatCardModule],
   templateUrl: './comment.component.html',
   styleUrls: ['./comment.component.scss']
 })

@@ -6,5 +6,10 @@
 
 <div *ngFor="let comment of comments" class="comment">
   <p>{{ comment.authorName }}</p>
-  <p>{{ comment.content }}</p>
+  <mat-card>
+    <mat-card-content appearance="outlined">
+      <p>{{ comment.content }}</p>
+    </mat-card-content>
+  </mat-card>
 </div>
+
