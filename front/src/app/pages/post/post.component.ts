@@ -6,11 +6,12 @@ import { DetailedPost } from 'src/app/models/post.model';
 import { CommentComponent } from './comment/comment.component';
 import { CreateCommentComponent } from './comment/create-comment/create-comment.component';
 import { GoBackComponent } from 'src/app/utils/go-back/go-back.component';
+import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
   selector: 'app-post',
   standalone: true,
-  imports: [CommonModule, CommentComponent, CreateCommentComponent, GoBackComponent],
+  imports: [CommonModule, CommentComponent, CreateCommentComponent, GoBackComponent, MatDividerModule],
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.scss']
 })

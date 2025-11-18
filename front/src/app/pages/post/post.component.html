@@ -10,7 +10,7 @@
   </div>
 </div>
 
-<hr>
+<mat-divider></mat-divider>
 <p>Commentaires</p>
 <app-comment #commentsComp [postId]="postId"></app-comment>
 <app-create-comment [postId]="postId" (commentCreated)="commentsComp.refresh()"></app-create-comment>
