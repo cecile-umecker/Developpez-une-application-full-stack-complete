@@ -1,11 +1,20 @@
 <div class="topic-list">
   <div class="topic-card" *ngFor="let topic of topics">
-    <p>{{ topic.title }}</p>
-    <p>{{ topic.description }}</p>
-    <button 
-      [disabled]="topic.subscribed" 
-      (click)="!topic.subscribed && onSubscribe(topic.id)">
-      {{ topic.subscribed ? 'Déjà abonné' : 'S\'abonner' }}
-    </button>
+    <mat-card>
+      <mat-card-header>
+        <div mat-card-avatar class="example-header-image"></div>
+        <mat-card-title>{{ topic.title }}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        {{ topic.description }}
+      </mat-card-content>
+      <mat-card-actions>
+        <button mat-flat-button color="primary"
+          [disabled]="topic.subscribed" 
+          (click)="!topic.subscribed && onSubscribe(topic.id)">
+          {{ topic.subscribed ? 'Déjà abonné' : 'S\'abonner' }}
+        </button>
+      </mat-card-actions>
+    </mat-card>
   </div>
 </div>

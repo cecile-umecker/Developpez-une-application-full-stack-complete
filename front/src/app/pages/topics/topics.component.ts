@@ -3,11 +3,13 @@ import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { TopicService } from '../../core/services/topic.service';
 import { Topic } from '../../models/topic.model';
+import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-topics',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, MatButtonModule, MatCardModule],
   templateUrl: './topics.component.html',
   styleUrls: ['./topics.component.scss']
 })
