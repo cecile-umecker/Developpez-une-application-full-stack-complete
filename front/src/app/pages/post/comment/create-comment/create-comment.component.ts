@@ -5,11 +5,12 @@ import { PostService } from 'src/app/core/services/post.service';
 import { NewComment } from 'src/app/models/comment.model';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-create-comment',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, MatInputModule, MatButtonModule],
+  imports: [CommonModule, ReactiveFormsModule, MatInputModule, MatButtonModule, MatIconModule],
   templateUrl: './create-comment.component.html',
   styleUrls: ['./create-comment.component.scss']
 })
