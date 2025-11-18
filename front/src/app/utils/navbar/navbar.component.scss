@@ -1,9 +1,50 @@
 .navbar {
+  border-bottom: 1px solid #000000;
+  background: white;
+  position: sticky;
+  top: 0;
+  z-index: 1001;
+}
+
+.sidenav-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1002;
+  pointer-events: none;
+  background: transparent;
+
+  mat-sidenav {
+    pointer-events: auto;
+    width: 250px;
+    margin-top: 0;
+  }
+
+  mat-sidenav-content {
+    background: transparent;
+  }
+
+  ::ng-deep .mat-drawer-backdrop {
+    pointer-events: auto;
+  }
+}
+
+.navbar-content {
   display: flex;
   align-items: center;
   justify-content: space-between;
   height: 94px;
-  border-bottom: 1px solid #000000;
+  padding: 0 20px;
+}
+
+.menu-button {
+  margin-right: 16px;
+
+  ::ng-deep .mat-mdc-button-persistent-ripple::before {
+    display: none !important;
+  }
 }
 
 img {
@@ -11,12 +52,126 @@ img {
 }
 
 #logo {
-  margin-left: 20px;
+  display: flex;
+  align-items: center;
 }
 
-#links {
-  width: 40%;
-  display: flex;
-  justify-content: space-around;
+.desktop-nav {
+  display: flex !important;
+  flex-direction: row !important;
+  padding: 0 !important;
+  
+  a {
+    width: auto !important;
+    padding: 0 16px !important;
+  }
 
+  mat-list-item:hover {
+    background-color: transparent !important;
+  }
+
+  ::ng-deep .mat-mdc-list-item-interactive::before {
+    display: none !important;
+  }
+
+  .mat-mdc-list-item-title {
+    font-size: 20px !important;
+  }
+
+  a:first-child .mat-mdc-list-item-title {
+    font-size: 14px !important;
+    color: #A40F0F !important;
+    font-weight: bold !important;
+  }
+
+  mat-icon {
+    width: 48px !important;
+    height: 48px !important;
+    font-size: 48px !important;
+  }
+}
+
+mat-sidenav {
+  .sidenav-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  a:first-child {
+    margin-top: 30px;
+  }
+
+  .top-nav {
+    flex: 1;
+  }
+
+  .bottom-nav {
+    margin-bottom: 16px;
+  }
+
+  mat-list-item:hover {
+    background-color: transparent !important;
+  }
+
+  ::ng-deep .mat-mdc-list-item-interactive::before {
+    display: none !important;
+  }
+
+  .mat-mdc-list-item-title {
+    font-size: 20px !important;
+  }
+
+  .top-nav a:first-child .mat-mdc-list-item-title {
+    font-size: 14px !important;
+    color: #A40F0F !important;
+    font-weight: bold !important;
+  }
+
+  mat-icon {
+    width: 48px !important;
+    height: 48px !important;
+    font-size: 48px !important;
+    margin-right: 0 !important;
+    margin-left: auto !important;
+    color: #9e9e9e !important;
+  }
+
+  a[aria-current="page"] mat-icon {
+    color: #673ab7 !important;
+  }
+
+  mat-nav-list {
+    padding-right: 0 !important;
+  }
+
+  a {
+    padding-right: 16px !important;
+    padding-left: 0 !important;
+    text-align: right !important;
+    display: flex !important;
+    justify-content: flex-end !important;
+    
+    .mat-mdc-list-item-unscoped-content {
+      width: 100% !important;
+      text-align: right !important;
+      display: flex !important;
+      justify-content: flex-end !important;
+    }
+  }
+}
+
+// Mobile styles
+@media (max-width: 768px) {
+  .navbar-content {
+    height: 70px;
+  }
+
+  img {
+    width: 100px;
+  }
+
+  #links {
+    display: none;
+  }
 }

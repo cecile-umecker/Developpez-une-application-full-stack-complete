@@ -1,15 +1,47 @@
 <nav class="navbar">
-  <div id="logo">
-    <img src="assets/logo_p6.png" alt="Logo" />
-  </div>
-  <div id="links">
-    <ng-container *ngIf="isLoggedIn">
-      <a (click)="logout()" class="logout">Se déconnecter</a>
-      <a routerLink="/home">Articles</a>
-      <a routerLink="/topics">Thèmes</a>
-      <a routerLink="/profile">
-        <mat-icon>account_circle</mat-icon>
+  <div class="navbar-content">
+    <div id="logo">
+      <img src="assets/logo_p6.png" alt="Logo" />
+    </div>
+    <button *ngIf="isMobile && isLoggedIn" mat-icon-button (click)="sidenav.toggle()" class="menu-button">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <mat-nav-list id="links" *ngIf="!isMobile && isLoggedIn" class="desktop-nav">
+      <a mat-list-item (click)="logout()">
+        <span matListItemTitle>Se déconnecter</span>
       </a>
-    </ng-container>
+      <a mat-list-item routerLink="/home" routerLinkActive #rlaHomeDesktop="routerLinkActive" [activated]="rlaHomeDesktop.isActive">
+        <span matListItemTitle>Articles</span>
+      </a>
+      <a mat-list-item routerLink="/topics" routerLinkActive #rlaTopicsDesktop="routerLinkActive" [activated]="rlaTopicsDesktop.isActive">
+        <span matListItemTitle>Thèmes</span>
+      </a>
+      <a mat-list-item routerLink="/profile" routerLinkActive #rlaProfileDesktop="routerLinkActive" [activated]="rlaProfileDesktop.isActive">
+        <mat-icon matListItemIcon>account_circle</mat-icon>
+      </a>
+    </mat-nav-list>
   </div>
 </nav>
+
+<mat-sidenav-container class="sidenav-container" *ngIf="isMobile">
+  <mat-sidenav #sidenav mode="over" position="end">
+    <div class="sidenav-content">
+      <mat-nav-list *ngIf="isLoggedIn" class="top-nav">
+        <a mat-list-item (click)="logout()">
+          <span matListItemTitle>Se déconnecter</span>
+        </a>
+        <a mat-list-item routerLink="/home" routerLinkActive #rlaHome="routerLinkActive" [activated]="rlaHome.isActive" (click)="closeSidenav()">
+          <span matListItemTitle>Articles</span>
+        </a>
+        <a mat-list-item routerLink="/topics" routerLinkActive #rlaTopics="routerLinkActive" [activated]="rlaTopics.isActive" (click)="closeSidenav()">
+          <span matListItemTitle>Thèmes</span>
+        </a>
+      </mat-nav-list>
+      <mat-nav-list *ngIf="isLoggedIn" class="bottom-nav">
+        <a mat-list-item routerLink="/profile" routerLinkActive #rlaProfile="routerLinkActive" [activated]="rlaProfile.isActive" (click)="closeSidenav()">
+          <mat-icon>account_circle</mat-icon>
+        </a>
+      </mat-nav-list>
+    </div>
+  </mat-sidenav>
+</mat-sidenav-container>
