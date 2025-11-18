@@ -4,11 +4,14 @@ import { Subscription, Observable } from 'rxjs';
 import { FeedPost } from 'src/app/models/post.model';
 import { FeedService } from 'src/app/core/services/feed.service';
 import { Router } from '@angular/router';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, MatButtonModule, MatIconModule, MatCardModule],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss']
 })

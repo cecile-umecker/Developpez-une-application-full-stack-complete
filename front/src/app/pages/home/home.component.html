@@ -1,13 +1,24 @@
-<button (click)="createPost()">Créer un article</button>
-<button (click)="toggleSort()">Trier par {{ sortAsc ? '▲' : '▼' }}</button>
+<button mat-flat-button color="primary" (click)="createPost()">Créer un article</button>
+<a (click)="toggleSort()">
+  Trier par
+  <mat-icon>{{ sortAsc ? 'arrow_upward' : 'arrow_downward' }}</mat-icon>
+</a>
 
 <!-- Liste des articles -->
 <div class="post-list">
   <div *ngFor="let post of feed$ | async" class="post-card" (click)="viewPost(post.id)">
-    <h3>{{ post.title }}</h3>
-    <p>{{ post.createdAt | date:'short' }}</p>
-    <p>{{ post.authorName }}</p>
-    <p>{{ post.contentPreview }}</p>
+    <mat-card>
+      <mat-card-header>
+        <mat-card-title-group>
+          <mat-card-title>{{ post.title }}</mat-card-title>
+          <mat-card-subtitle>{{ post.createdAt | date:'short' }}</mat-card-subtitle>
+          <mat-card-subtitle>{{ post.authorName }}</mat-card-subtitle>
+        </mat-card-title-group>
+      </mat-card-header>
+      <mat-card-content>
+        {{ post.contentPreview }}
+      </mat-card-content>
+    </mat-card>
   </div>
 </div>
 
