@@ -3,11 +3,13 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { CommonModule } from '@angular/common';
 import { PostService } from 'src/app/core/services/post.service';
 import { NewComment } from 'src/app/models/comment.model';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-create-comment',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, MatInputModule, MatButtonModule],
   templateUrl: './create-comment.component.html',
   styleUrls: ['./create-comment.component.scss']
 })

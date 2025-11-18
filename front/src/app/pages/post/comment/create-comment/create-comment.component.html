@@ -1,7 +1,11 @@
 <form [formGroup]="form" (ngSubmit)="submit()" class="create-comment-form">
-  <textarea formControlName="content" rows="3" placeholder="Écrire un commentaire..."></textarea>
+  <div>
+    <mat-form-field appearance="outline">
+      <textarea matInput formControlName="content" rows="3" placeholder="Écrire un commentaire..."></textarea>
+    </mat-form-field>
+  </div>
 
-  <button type="submit" [disabled]="form.invalid || submitting">
+  <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid || submitting">
     {{ submitting ? 'Envoi...' : 'Commenter' }}
   </button>
 </form>
