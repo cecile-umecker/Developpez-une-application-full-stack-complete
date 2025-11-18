@@ -4,11 +4,13 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { GoBackComponent } from 'src/app/utils/go-back/go-back.component';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, GoBackComponent],
+  imports: [CommonModule, ReactiveFormsModule, GoBackComponent, MatButtonModule, MatInputModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
