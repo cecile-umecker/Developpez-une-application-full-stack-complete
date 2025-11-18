@@ -3,41 +3,38 @@
 
   <!-- Sélection du thème -->
   <div>
-    <label>Thème</label>
-
-    <select formControlName="topicId" [disabled]="loadingTopics">
-      <option value="">-- Choisir un thème --</option>
-      <option *ngFor="let topic of topics" [value]="topic.id">
-        {{ topic.title }}
-      </option>
-    </select>
-
+    <mat-form-field appearance="outline">
+      <mat-label>Sélectionner un thème</mat-label>
+      <mat-select matInput  formControlName="topicId" [disabled]="loadingTopics" aria-placeholder="Sélectionner un thème">
+        <mat-option *ngFor="let topic of topics" [value]="topic.id">
+          {{ topic.title }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
     <p *ngIf="form.get('topicId')?.invalid && form.get('topicId')?.touched">
       Choisir un thème est obligatoire.
     </p>
   </div>
-
-  <!-- Titre -->
   <div>
-    <label>Titre</label>
-    <input type="text" formControlName="title">
-
+    <mat-form-field appearance="outline">
+      <mat-label>Titre de l'article</mat-label>
+      <input matInput type="text" formControlName="title" >
+    </mat-form-field>
     <p *ngIf="form.get('title')?.invalid && form.get('title')?.touched">
       Le titre est trop court.
     </p>
   </div>
-
-  <!-- Contenu -->
   <div>
-    <label>Contenu</label>
-    <textarea rows="5" formControlName="content"></textarea>
-
+    <mat-form-field appearance="outline" class="full-width">
+      <mat-label>Contenu de l'article</mat-label>
+      <textarea matInput rows="5" formControlName="content" ></textarea>
+    </mat-form-field>
     <p *ngIf="form.get('content')?.invalid && form.get('content')?.touched">
       Le contenu est trop court.
     </p>
   </div>
 
-  <button type="submit" [disabled]="form.invalid || submitting">
+  <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid || submitting">
     {{ submitting ? 'Envoi…' : 'Créer le post' }}
   </button>
 

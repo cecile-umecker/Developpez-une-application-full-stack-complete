@@ -6,11 +6,15 @@ import { PostService } from 'src/app/core/services/post.service';
 import { NewPost } from 'src/app/models/post.model';
 import { Router } from '@angular/router';
 import { GoBackComponent } from 'src/app/utils/go-back/go-back.component';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatFormFieldModule } from '@angular/material/form-field';
 
 @Component({
   selector: 'app-create-post',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, GoBackComponent],
+  imports: [CommonModule, ReactiveFormsModule, GoBackComponent, MatButtonModule, MatInputModule, MatSelectModule, MatFormFieldModule],
   templateUrl: './create-post.component.html',
   styleUrls: ['./create-post.component.scss']
 })
