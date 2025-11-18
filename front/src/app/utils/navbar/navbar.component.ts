@@ -21,6 +21,7 @@ export class NavbarComponent {
   @ViewChild('sidenav') sidenav!: MatSidenav;
   isLoggedIn = false;
   isMobile = false;
+  showNavbar = true;
 
   constructor(
     private authService: AuthService,
@@ -39,8 +40,23 @@ export class NavbarComponent {
       .subscribe(result => {
         this.isMobile = result.matches;
         console.log('isMobile:', this.isMobile);
-        
+        this.updateNavbarVisibility();
       });
+
+    // Listen to route changes
+    this.router.events.subscribe(() => {
+      this.updateNavbarVisibility();
+    });
+  }
+
+  updateNavbarVisibility(): void {
+    const currentUrl = this.router.url;
+    const authRoutes = ['/login', '/register', '/'];
+    if (this.isMobile && authRoutes.includes(currentUrl)) {
+      this.showNavbar = false;
+    } else {
+      this.showNavbar = true;
+    }
   }
 
   logout(): void {
