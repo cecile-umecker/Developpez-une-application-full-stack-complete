@@ -1,6 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatButtonModule } from '@angular/material/button';
+import { MatInputModule } from '@angular/material/input';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { GoBackComponent } from 'src/app/utils/go-back/go-back.component';
@@ -9,7 +11,7 @@ import { passwordStrengthValidator } from 'src/app/utils/validators/passwordStre
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, GoBackComponent],
+  imports: [CommonModule, ReactiveFormsModule, GoBackComponent, MatButtonModule, MatInputModule],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss']
 })
