@@ -12,6 +12,8 @@
     text-align: left;
     width: 100%;
     margin-bottom: 16px;
+    font-size: 24px;
+    font-weight: 600;
   }
 
   .post-details {
@@ -22,6 +24,7 @@
 
     span {
       white-space: nowrap;
+      font-size: 20px;
     }
   }
 
@@ -31,6 +34,7 @@
     margin-bottom: 32px;
     margin-left: auto;
     margin-right: auto;
+    font-size: 20px;
   }
 
   mat-divider {
@@ -39,6 +43,11 @@
     margin-left: auto;
     margin-right: auto;
   }
+}
+
+#subtitle {
+  font-size: 20px;
+  margin-bottom: 32px;
 }
 
 @media (max-width: 768px) {
