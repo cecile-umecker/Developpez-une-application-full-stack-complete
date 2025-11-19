@@ -10,11 +10,13 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
+import { passwordStrengthValidator } from 'src/app/utils/validators/passwordStrengthValidator';
+import { MatDividerModule } from '@angular/material/divider';
 
 @Component({
   selector: 'app-user-details',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, MatInputModule, MatFormFieldModule, ReactiveFormsModule, MatCardModule],
+  imports: [CommonModule, MatButtonModule, MatInputModule, MatFormFieldModule, ReactiveFormsModule, MatDividerModule, MatCardModule],
   templateUrl: './user-details.component.html',
   styleUrls: ['./user-details.component.scss']
 })
@@ -39,12 +41,24 @@ export class UserDetailsComponent implements OnInit, OnDestroy {
     this.subscriptions$ = this.subscriptionsSubject.asObservable();
   }
 
+  conditionalPasswordValidator(): any {
+    return (control: any) => {
+      const value = control.value;
+      // If empty, no validation error
+      if (!value || value.length === 0) {
+        return null;
+      }
+      // If not empty, apply password strength validation
+      return passwordStrengthValidator(control);
+    };
+  }
+
   ngOnInit(): void {
     // Initialize reactive form with validators
     this.form = this.fb.group({
       username: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
-      password: ['']
+      password: ['', [this.conditionalPasswordValidator()]]
     });
 
     // Load user data and populate form
