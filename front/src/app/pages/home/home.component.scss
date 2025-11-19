@@ -74,7 +74,8 @@ mat-icon {
 
   .action {
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start;
+    justify-content: center;
     gap: 16px;
   }
 }
