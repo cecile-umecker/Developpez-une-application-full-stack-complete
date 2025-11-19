@@ -1,8 +1,7 @@
 <app-go-back></app-go-back>
-<form [formGroup]="form" (ngSubmit)="submit()" class="form">
-
-  <!-- Sélection du thème -->
-  <div>
+<div class="container">
+  <h1>Créer un nouvel article</h1>
+  <form [formGroup]="form" (ngSubmit)="submit()" class="form">
     <mat-form-field appearance="outline">
       <mat-label>Sélectionner un thème</mat-label>
       <mat-select matInput  formControlName="topicId" [disabled]="loadingTopics" aria-placeholder="Sélectionner un thème">
@@ -11,31 +10,16 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
-    <p *ngIf="form.get('topicId')?.invalid && form.get('topicId')?.touched">
-      Choisir un thème est obligatoire.
-    </p>
-  </div>
-  <div>
     <mat-form-field appearance="outline">
       <mat-label>Titre de l'article</mat-label>
       <input matInput type="text" formControlName="title" >
     </mat-form-field>
-    <p *ngIf="form.get('title')?.invalid && form.get('title')?.touched">
-      Le titre est trop court.
-    </p>
-  </div>
-  <div>
     <mat-form-field appearance="outline" class="full-width">
       <mat-label>Contenu de l'article</mat-label>
       <textarea matInput rows="5" formControlName="content" ></textarea>
     </mat-form-field>
-    <p *ngIf="form.get('content')?.invalid && form.get('content')?.touched">
-      Le contenu est trop court.
-    </p>
-  </div>
-
-  <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid || submitting">
-    {{ submitting ? 'Envoi…' : 'Créer le post' }}
-  </button>
-
-</form>
+    <button mat-flat-button color="primary" type="submit" [disabled]="form.invalid || submitting">
+      {{ submitting ? 'Envoi…' : 'Créer' }}
+    </button>
+  </form>
+</div>
