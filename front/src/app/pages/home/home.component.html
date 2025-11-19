@@ -1,26 +1,30 @@
-<button mat-flat-button color="primary" (click)="createPost()">Créer un article</button>
-<a (click)="toggleSort()">
-  Trier par
-  <mat-icon>{{ sortAsc ? 'arrow_upward' : 'arrow_downward' }}</mat-icon>
-</a>
-
-<!-- Liste des articles -->
-<div class="post-list">
-  <div *ngFor="let post of feed$ | async" class="post-card" (click)="viewPost(post.id)">
-    <mat-card>
-      <mat-card-header>
-        <mat-card-title-group>
-          <mat-card-title>{{ post.title }}</mat-card-title>
-          <mat-card-subtitle>{{ post.createdAt | date:'short' }}</mat-card-subtitle>
-          <mat-card-subtitle>{{ post.authorName }}</mat-card-subtitle>
-        </mat-card-title-group>
-      </mat-card-header>
-      <mat-card-content>
-        {{ post.contentPreview }}
-      </mat-card-content>
-    </mat-card>
+<div class="container">
+  <div class="action">
+    <button mat-flat-button color="primary" (click)="createPost()">Créer un article</button>
+    <a (click)="toggleSort()">
+      Trier par
+      <mat-icon>{{ sortAsc ? 'arrow_upward' : 'arrow_downward' }}</mat-icon>
+    </a>
+  </div>
+  <div class="grid">
+    <div class="post-list">
+      <div *ngFor="let post of feed$ | async" class="post-card" (click)="viewPost(post.id)">
+        <mat-card>
+          <mat-card-header>
+            <mat-card-title>{{ post.title }}</mat-card-title>
+            <div class="card-subtitle-row">
+              <mat-card-subtitle class="date">{{ post.createdAt | date:'short' }}</mat-card-subtitle>
+              <mat-card-subtitle class="author">{{ post.authorName }}</mat-card-subtitle>
+            </div>
+          </mat-card-header>
+          <mat-card-content>
+            {{ post.contentPreview }}
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+    <div *ngIf="loading" class="loading">Chargement...</div>  
   </div>
 </div>
 
-<!-- Indicateur de chargement -->
-<div *ngIf="loading" class="loading">Chargement...</div>
+
