@@ -1,15 +1,16 @@
-<div *ngIf="loadingComments">Chargement des commentaires...</div>
-
-<div *ngIf="!loadingComments && comments.length === 0">
-  Aucun commentaire pour l'instant.
+<div class="container">
+  <div *ngIf="loadingComments">Chargement des commentaires...</div>
+  <div *ngIf="!loadingComments && comments.length === 0">
+    Aucun commentaire pour l'instant.
+  </div>
+  <div *ngFor="let comment of comments" class="comment">
+    <p id="author">{{ comment.authorName }}</p>
+    <mat-card>
+      <mat-card-content>
+        <p>{{ comment.content }}</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
 </div>
 
-<div *ngFor="let comment of comments" class="comment">
-  <p>{{ comment.authorName }}</p>
-  <mat-card>
-    <mat-card-content appearance="outlined">
-      <p>{{ comment.content }}</p>
-    </mat-card-content>
-  </mat-card>
-</div>
 
