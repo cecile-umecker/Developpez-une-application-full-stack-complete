@@ -1,16 +1,19 @@
 <app-go-back></app-go-back>
-<div *ngIf="loadingPost">Chargement du post...</div>
-<div *ngIf="!loadingPost && post">
-  <h1>{{ post.title }}</h1>
-  <p><em>{{ post.createdAt | date:'short' }}</em></p>
-  <p><strong></strong> {{ post.authorName }}</p>
-  <p><strong></strong> {{ post.topicTitle }}</p>
-  <div class="content">
-    {{ post.content }}
+<div class="container">
+  <div *ngIf="loadingPost">Chargement du post...</div>
+  <div class="post" *ngIf="!loadingPost && post">
+    <h1>{{ post.title }}</h1>
+    <div class="post-details">
+      <span>{{ post.createdAt | date:'short' }}</span>
+      <span>{{ post.authorName }}</span>
+      <span>{{ post.topicTitle }}</span>
+    </div>
+    <div class="content">
+      {{ post.content }}
+    </div>
+    <mat-divider></mat-divider>
   </div>
+  <p id="subtitle">Commentaires</p>
+  <app-comment #commentsComp [postId]="postId"></app-comment>
+  <app-create-comment [postId]="postId" (commentCreated)="commentsComp.refresh()"></app-create-comment>
 </div>
-
-<mat-divider></mat-divider>
-<p>Commentaires</p>
-<app-comment #commentsComp [postId]="postId"></app-comment>
-<app-create-comment [postId]="postId" (commentCreated)="commentsComp.refresh()"></app-create-comment>

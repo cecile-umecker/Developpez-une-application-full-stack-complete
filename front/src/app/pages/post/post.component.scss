@@ -1,0 +1,63 @@
+.container {
+  width: 95%;
+  margin-left: 5%;
+}
+
+.post {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  h1 {
+    text-align: left;
+    width: 100%;
+    margin-bottom: 16px;
+  }
+
+  .post-details {
+    display: flex;
+    gap: 24px;
+    width: 50%;
+    margin-bottom: 24px;
+
+    span {
+      white-space: nowrap;
+    }
+  }
+
+  .content {
+    width: 95%;
+    text-align: left;
+    margin-bottom: 32px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  mat-divider {
+    width: 95%;
+    margin-bottom: 32px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    margin: auto;
+  }
+
+  .post {
+    h1 {
+      text-align: center;
+    }
+
+    .post-details {
+      flex-wrap: wrap;
+      width: 100%;
+
+      span:last-child {
+        flex-basis: 100%;
+      }
+    }
+  }
+}
