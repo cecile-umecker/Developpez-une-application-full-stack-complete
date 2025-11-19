@@ -1,10 +1,7 @@
 <form [formGroup]="form" (ngSubmit)="submit()" class="create-comment-form">
-  <div>
-    <mat-form-field appearance="outline">
-      <textarea matInput formControlName="content" rows="3" placeholder="Écrire un commentaire..."></textarea>
-    </mat-form-field>
-  </div>
-
+  <mat-form-field appearance="outline">
+    <textarea matInput formControlName="content" rows="3" placeholder="Écrire un commentaire..."></textarea>
+  </mat-form-field>
   <button mat-button  type="submit" [disabled]="form.invalid || submitting">
     <mat-icon appearance="outlined" color="primary">
     {{ submitting ? 'schedule_send' : 'send' }}
