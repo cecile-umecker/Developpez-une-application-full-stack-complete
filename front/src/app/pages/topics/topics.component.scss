@@ -22,13 +22,19 @@
     font-size: 16px !important;
     margin-bottom: 8px !important;
   }
+  
   mat-card-content {
     flex: 1;
+    font-size: 14px !important;
   }
 
   mat-card-actions {
     display: flex;
     justify-content: center;
+    
+    button {
+      font-size: 16px !important;
+    }
   }
 }
 
