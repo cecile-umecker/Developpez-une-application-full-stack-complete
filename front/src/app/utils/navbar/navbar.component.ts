@@ -35,7 +35,6 @@ export class NavbarComponent {
       (status) => (this.isLoggedIn = status)
     );
 
-    // Detect mobile devices
     this.breakpointObserver.observe([Breakpoints.Handset])
       .subscribe(result => {
         this.isMobile = result.matches;
@@ -43,7 +42,6 @@ export class NavbarComponent {
         this.updateNavbarVisibility();
       });
 
-    // Listen to route changes
     this.router.events.subscribe(() => {
       this.updateNavbarVisibility();
     });

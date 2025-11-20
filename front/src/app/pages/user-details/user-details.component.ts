@@ -37,31 +37,26 @@ export class UserDetailsComponent implements OnInit, OnDestroy {
     private userService: UserService, 
     private topicService: TopicService
   ) {
-    // Make subscriptions$ an observable of the BehaviorSubject
     this.subscriptions$ = this.subscriptionsSubject.asObservable();
   }
 
   conditionalPasswordValidator(): any {
     return (control: any) => {
       const value = control.value;
-      // If empty, no validation error
       if (!value || value.length === 0) {
         return null;
       }
-      // If not empty, apply password strength validation
       return passwordStrengthValidator(control);
     };
   }
 
   ngOnInit(): void {
-    // Initialize reactive form with validators
     this.form = this.fb.group({
       username: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [this.conditionalPasswordValidator()]]
     });
 
-    // Load user data and populate form
     this.user$ = this.userService.getUser().pipe(
       tap(user => {
         this.form.patchValue({
@@ -77,10 +72,8 @@ export class UserDetailsComponent implements OnInit, OnDestroy {
       takeUntil(this.destroy$)
     );
 
-    // Subscribe to user$ to trigger the HTTP request
     this.user$.subscribe();
 
-    // Load user's topic subscriptions
     this.topicService.getUserTopics().pipe(
       tap(topics => this.subscriptionsSubject.next(topics)),
       catchError(err => {
@@ -110,7 +103,6 @@ export class UserDetailsComponent implements OnInit, OnDestroy {
     this.userService.updateUser(editData).pipe(
       tap(updatedUser => {
         this.successMessage = 'Profil mis à jour avec succès';
-        // Clear password field after successful update
         this.form.patchValue({ password: '' }, { emitEvent: false });
       }),
       catchError(err => {
