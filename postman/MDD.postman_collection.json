@@ -1,0 +1,542 @@
+{
+	"info": {
+		"_postman_id": "d08d02b4-bba8-453e-ae2e-d53613cccad3",
+		"name": "MDD API",
+		"description": "# MDD (Monde de Dév) - REST API\n\n## Overview\nThis is the complete API documentation for the MDD social network application. The API allows developers to share articles, subscribe to topics, and engage in discussions.\n\n## Authentication\nThis API uses **HTTP-only cookies** for authentication, providing enhanced security against XSS attacks.\n\n### How it works:\n1. Login via `POST /api/auth/login` - Receives `access_token` and `refresh_token` cookies\n2. Cookies are automatically sent with subsequent requests\n3. Access tokens expire after 1 hour\n4. Use `POST /api/auth/refresh` to renew tokens\n5. Logout via `POST /api/auth/logout` clears all cookies\n\n⚠️ **Important**: Make sure \"Send cookies\" is enabled in Postman settings for authenticated requests.\n\n## Base URL\n```\nhttp://localhost:8080/api\n```\n\n## Response Formats\nAll responses are in JSON format.\n\n### Success Response Example:\n```json\n{\n  \"message\": \"Operation successful\"\n}\n```\n\n### Error Response Example:\n```json\n{\n  \"message\": \"Error description\"\n}\n```\n\n## Endpoints Overview\n\n### 🔐 Authentication\n- Register new user\n- Login with username or email\n- Refresh access token\n- Logout\n\n### 👤 User Management\n- Get current user profile\n- Update user information\n\n### 📚 Topics\n- Browse all available topics\n- Get user subscribed topics\n- Subscribe/unsubscribe to topics\n\n### 📰 Feed\n- Get personalized feed from subscribed topics\n- Pagination and sorting support\n\n### 📝 Posts\n- View post details\n- Create new posts\n- Read and add comments\n\n---\n\n**Version:** 1.0.0  \n**Author:** Cécile UMECKER",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "39456098"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Register",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\" : \"Freiya\",\r\n    \"email\": \"test@test.com\",\r\n    \"password\": \"test!1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/auth/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login (email)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"login\": \"alice@mail.com\",\r\n    \"password\" : \"test!1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login (username)",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"login\": \"Freiya\",\r\n    \"password\" : \"test!1234\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "access_token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNzYyNDIxMjk1LCJleHAiOjE3NjI0MjQ4OTV9.jCHLM1S8TQVRE3PXUzexPPfO49wk3kNdj0UPSg4_lMA;refresh_token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNzYyNDIxMjk1LCJleHAiOjE3NjMwMjYwOTV9.bYdx0Z-zHwvrJua2XmbULF2413okplFBELh2CUVvYGM",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/auth/refresh",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"auth",
+								"refresh"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "access_token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNzYyNDI0MTMzLCJleHAiOjE3NjI0Mjc3MzN9.XxPT1L3VynhVmRaAxdcONI3xy5zUZWqqdaliPk9K4-Q",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/auth/logout",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Me details",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "access_token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNzYyNTAzODI0LCJleHAiOjE3NjI1MDc0MjR9.tJz4FKZo8cfB-UKOKUFrO1oUkP-u0X1-IZ--3aHcIuQ",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/user/me",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"user",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Me update details",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "access_token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNzYyNDI0MDMyLCJleHAiOjE3NjI0Mjc2MzJ9.DktFNHAsUGT_Oluj5uuVSE74_eGHlv8DIcnUrElK2eE;refresh_token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNzYyNDI0MDMyLCJleHAiOjE3NjMwMjg4MzJ9.qD1EeDkf2r7iFH0wLGa6n9DcoF0Dw3WBsmWZXXV376I",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\" : \"test@test.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/user/me",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"user",
+								"me"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Topic",
+			"item": [
+				{
+					"name": "All topics",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "access_token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNzYyNDI0MDMyLCJleHAiOjE3NjI0Mjc2MzJ9.DktFNHAsUGT_Oluj5uuVSE74_eGHlv8DIcnUrElK2eE;refresh_token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNzYyNDI0MDMyLCJleHAiOjE3NjMwMjg4MzJ9.qD1EeDkf2r7iFH0wLGa6n9DcoF0Dw3WBsmWZXXV376I",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/topic",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"topic"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "User topics",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "access_token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNzYyNDI0MDMyLCJleHAiOjE3NjI0Mjc2MzJ9.DktFNHAsUGT_Oluj5uuVSE74_eGHlv8DIcnUrElK2eE;refresh_token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNzYyNDI0MDMyLCJleHAiOjE3NjMwMjg4MzJ9.qD1EeDkf2r7iFH0wLGa6n9DcoF0Dw3WBsmWZXXV376I",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/topic/my",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"topic",
+								"my"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Subscribe topic",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "access_token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNzYyNDI0MDMyLCJleHAiOjE3NjI0Mjc2MzJ9.DktFNHAsUGT_Oluj5uuVSE74_eGHlv8DIcnUrElK2eE;refresh_token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNzYyNDI0MDMyLCJleHAiOjE3NjMwMjg4MzJ9.qD1EeDkf2r7iFH0wLGa6n9DcoF0Dw3WBsmWZXXV376I",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/topic/2/subscription",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"topic",
+								"2",
+								"subscription"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Unsubscribe topic",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "access_token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNzYyNDI0MDMyLCJleHAiOjE3NjI0Mjc2MzJ9.DktFNHAsUGT_Oluj5uuVSE74_eGHlv8DIcnUrElK2eE;refresh_token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNzYyNDI0MDMyLCJleHAiOjE3NjMwMjg4MzJ9.qD1EeDkf2r7iFH0wLGa6n9DcoF0Dw3WBsmWZXXV376I",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/topic/1/subscription",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"topic",
+								"1",
+								"subscription"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Feed",
+			"item": [
+				{
+					"name": "Feed",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "access_token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNzYyNDI0MDMyLCJleHAiOjE3NjI0Mjc2MzJ9.DktFNHAsUGT_Oluj5uuVSE74_eGHlv8DIcnUrElK2eE;refresh_token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNzYyNDI0MDMyLCJleHAiOjE3NjMwMjg4MzJ9.qD1EeDkf2r7iFH0wLGa6n9DcoF0Dw3WBsmWZXXV376I",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/feed?page=0&size=10&sort=createdAt,asc",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"feed"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								},
+								{
+									"key": "sort",
+									"value": "createdAt,asc"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Post",
+			"item": [
+				{
+					"name": "Post detail",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "access_token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNzYyNDI0MDMyLCJleHAiOjE3NjI0Mjc2MzJ9.DktFNHAsUGT_Oluj5uuVSE74_eGHlv8DIcnUrElK2eE;refresh_token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNzYyNDI0MDMyLCJleHAiOjE3NjMwMjg4MzJ9.qD1EeDkf2r7iFH0wLGa6n9DcoF0Dw3WBsmWZXXV376I",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/post/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"post",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "access_token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNzYyNDI0MDMyLCJleHAiOjE3NjI0Mjc2MzJ9.DktFNHAsUGT_Oluj5uuVSE74_eGHlv8DIcnUrElK2eE;refresh_token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNzYyNDI0MDMyLCJleHAiOjE3NjMwMjg4MzJ9.qD1EeDkf2r7iFH0wLGa6n9DcoF0Dw3WBsmWZXXV376I",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"title\": \"Les bienfaits du clean code\",\r\n  \"content\": \"Écrire du code propre n'est pas juste une question d'esthétique, mais un vrai gain de productivité et de longévité pour le projet.\",\r\n  \"topicId\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/post",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"post"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Comment",
+			"item": [
+				{
+					"name": "Post comments",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "access_token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNzYyNDI0MDMyLCJleHAiOjE3NjI0Mjc2MzJ9.DktFNHAsUGT_Oluj5uuVSE74_eGHlv8DIcnUrElK2eE;refresh_token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNzYyNDI0MDMyLCJleHAiOjE3NjMwMjg4MzJ9.qD1EeDkf2r7iFH0wLGa6n9DcoF0Dw3WBsmWZXXV376I",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8080/api/post/4/comments",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"post",
+								"4",
+								"comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Post comment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Cookie",
+								"value": "access_token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNzYyNDI0MDMyLCJleHAiOjE3NjI0Mjc2MzJ9.DktFNHAsUGT_Oluj5uuVSE74_eGHlv8DIcnUrElK2eE;refresh_token=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIzIiwiaWF0IjoxNzYyNDI0MDMyLCJleHAiOjE3NjMwMjg4MzJ9.qD1EeDkf2r7iFH0wLGa6n9DcoF0Dw3WBsmWZXXV376I",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"content\": \"Super article ! Merci pour les explications claires.\"\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/post/3/comments",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"post",
+								"3",
+								"comments"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
