@@ -8,6 +8,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { Subscription } from 'rxjs';
 
+/**
+ * User login component.
+ * Manages the login form with validation and authentication.
+ */
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -16,9 +20,13 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnDestroy {
+  /** Login form with login and password fields */
   loginForm: FormGroup;
+  /** Error message to display on failure */
   errorMessage?: string;
+  /** Loading indicator during authentication */
   loading = false;
+  /** Subscription management to prevent memory leaks */
   private subscription?: Subscription;
 
   constructor(
@@ -32,6 +40,11 @@ export class LoginComponent implements OnDestroy {
     });
   }
 
+  /**
+   * Submits the login form.
+   * On success, redirects to the home page.
+   * On failure, displays an error message.
+   */
   onSubmit(): void {
     if (this.loginForm.invalid) return;
 
@@ -47,6 +60,9 @@ export class LoginComponent implements OnDestroy {
     });
   }
 
+  /**
+   * Cleans up the subscription when the component is destroyed.
+   */
   ngOnDestroy(): void {
     this.subscription?.unsubscribe();
   }

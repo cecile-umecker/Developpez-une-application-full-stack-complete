@@ -66,7 +66,6 @@ export class NavbarComponent {
     this.breakpointObserver.observe([Breakpoints.Handset])
       .subscribe(result => {
         this.isMobile = result.matches;
-        console.log('isMobile:', this.isMobile);
         this.updateNavbarVisibility();
       });
 

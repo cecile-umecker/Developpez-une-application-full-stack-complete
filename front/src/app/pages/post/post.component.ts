@@ -9,6 +9,10 @@ import { GoBackComponent } from 'src/app/utils/go-back/go-back.component';
 import { MatDividerModule } from '@angular/material/divider';
 import { Subscription } from 'rxjs';
 
+/**
+ * Post detail display component.
+ * Displays the complete content of an post along with its comments.
+ */
 @Component({
   selector: 'app-post',
   standalone: true,
@@ -17,10 +21,13 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./post.component.scss']
 })
 export class PostComponent implements OnInit, OnDestroy {
-
+  /** Identifier of the post to display */
   postId!: number;
+  /** Detailed post data */
   post?: DetailedPost;
+  /** post loading indicator */
   loadingPost = true;
+  /** Subscription management to prevent memory leaks */
   private subscription?: Subscription;
 
   constructor(
@@ -28,6 +35,9 @@ export class PostComponent implements OnInit, OnDestroy {
     private postService: PostService
   ) {}
 
+  /**
+   * Initializes the component by retrieving the post ID from the URL and loading its data.
+   */
   ngOnInit(): void {
     this.postId = Number(this.route.snapshot.paramMap.get('id'));
     if (isNaN(this.postId)) return;
@@ -35,6 +45,10 @@ export class PostComponent implements OnInit, OnDestroy {
     this.loadPost();
   }
 
+  /**
+   * Loads the detailed post data from the server.
+   * @private
+   */
   private loadPost(): void {
     this.loadingPost = true;
     this.subscription = this.postService.getPost(this.postId).subscribe({
@@ -48,6 +62,9 @@ export class PostComponent implements OnInit, OnDestroy {
     });
   }
 
+  /**
+   * Cleans up the subscription when the component is destroyed.
+   */
   ngOnDestroy(): void {
     this.subscription?.unsubscribe();
   }

@@ -8,6 +8,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { Subscription } from 'rxjs';
 
+/**
+ * Comment creation component.
+ * Allows users to add a comment to an post.
+ */
 @Component({
   selector: 'app-create-comment',
   standalone: true,
@@ -16,12 +20,16 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./create-comment.component.scss']
 })
 export class CreateCommentComponent implements OnDestroy {
-
+  /** Identifier of the post to which the comment will be added */
   @Input() postId!: number;
+  /** Event emitted after successful comment creation */
   @Output() commentCreated = new EventEmitter<void>();
 
+  /** Comment creation form */
   form: FormGroup;
+  /** Form submission indicator */
   submitting = false;
+  /** Subscription management to prevent memory leaks */
   private subscription?: Subscription;
 
   constructor(private fb: FormBuilder, private postService: PostService) {
@@ -30,6 +38,10 @@ export class CreateCommentComponent implements OnDestroy {
     });
   }
 
+  /**
+   * Submits the comment creation form.
+   * On success, resets the form and emits the commentCreated event.
+   */
   submit(): void {
     
     if (this.form.invalid || this.submitting) return;
@@ -37,7 +49,6 @@ export class CreateCommentComponent implements OnDestroy {
     this.submitting = true;
 
     const payload: NewComment = { content: this.form.value.content };
-console.log('POST payload:', payload, 'url:', `/api/post/${this.postId}/comment`);
 
     this.subscription = this.postService.createComment(this.postId, payload).subscribe({
       next: (newComment) => {
@@ -45,13 +56,15 @@ console.log('POST payload:', payload, 'url:', `/api/post/${this.postId}/comment`
         this.form.reset();
         this.commentCreated.emit();
       },
-      error: (err) => {
+      error: () => {
         this.submitting = false;
-        console.error(err);
       }
     });
   }
 
+  /**
+   * Cleans up the subscription when the component is destroyed.
+   */
   ngOnDestroy(): void {
     this.subscription?.unsubscribe();
   }

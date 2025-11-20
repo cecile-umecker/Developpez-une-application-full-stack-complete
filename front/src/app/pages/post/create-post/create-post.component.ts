@@ -12,6 +12,10 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { Subscription } from 'rxjs';
 
+/**
+ * New post creation component.
+ * Allows users to create an post by selecting a topic and providing a title and content.
+ */
 @Component({
   selector: 'app-create-post',
   standalone: true,
@@ -20,11 +24,15 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./create-post.component.scss']
 })
 export class CreatePostComponent implements OnInit, OnDestroy {
-
+  /** Post creation form */
   form!: FormGroup;
+  /** List of topics the user is subscribed to */
   topics: { id: number; title: string }[] = [];
+  /** Topics loading indicator */
   loadingTopics = true;
+  /** Form submission indicator */
   submitting = false;
+  /** Subscription management to prevent memory leaks */
   private subscriptions = new Subscription();
 
   constructor(
@@ -34,8 +42,10 @@ export class CreatePostComponent implements OnInit, OnDestroy {
     private router: Router
   ) {}
 
+  /**
+   * Initializes the component by creating the form and loading the user's topics.
+   */
   ngOnInit(): void {
-    console.log('createpost component loaded');
     this.form = this.fb.group({
       topicId: ['', Validators.required],
       title: ['', [Validators.required, Validators.minLength(3)]],
@@ -54,6 +64,10 @@ export class CreatePostComponent implements OnInit, OnDestroy {
     this.subscriptions.add(sub);
   }
 
+  /**
+   * Submits the post creation form.
+   * On success, redirects to the new post's detail page.
+   */
   submit(): void {
     if (this.form.invalid) return;
 
@@ -66,14 +80,16 @@ export class CreatePostComponent implements OnInit, OnDestroy {
         this.submitting = false;
         this.router.navigate(['/post', createdPost.id]);
       },
-      error: (err) => {
+      error: () => {
         this.submitting = false;
-        console.error(err);
       }
     });
     this.subscriptions.add(sub);
   }
 
+  /**
+   * Cleans up subscriptions when the component is destroyed.
+   */
   ngOnDestroy(): void {
     this.subscriptions.unsubscribe();
   }

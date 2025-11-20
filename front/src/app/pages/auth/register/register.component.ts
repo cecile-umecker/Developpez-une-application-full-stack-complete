@@ -9,6 +9,10 @@ import { GoBackComponent } from 'src/app/utils/go-back/go-back.component';
 import { passwordStrengthValidator } from 'src/app/utils/validators/passwordStrengthValidator';
 import { Subscription } from 'rxjs';
 
+/**
+ * User registration component.
+ * Manages the registration form with validation for username, email, and strong password.
+ */
 @Component({
   selector: 'app-register',
   standalone: true,
@@ -17,9 +21,13 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./register.component.scss']
 })
 export class RegisterComponent implements OnDestroy {
+  /** Registration form with username, email, and password fields */
   registerForm: FormGroup;
+  /** Error message to display on failure */
   errorMessage?: string;
+  /** Loading indicator during registration */
   loading = false;
+  /** Subscription management to prevent memory leaks */
   private subscription?: Subscription;
 
   constructor(
@@ -34,6 +42,11 @@ export class RegisterComponent implements OnDestroy {
     });
   }
 
+  /**
+   * Submits the registration form.
+   * On success, redirects to the login page.
+   * On failure, displays an error message.
+   */
   onSubmit(): void {
     if(this.registerForm.invalid) return;
 
@@ -49,6 +62,9 @@ export class RegisterComponent implements OnDestroy {
     });
   }
 
+  /**
+   * Cleans up the subscription when the component is destroyed.
+   */
   ngOnDestroy(): void {
     this.subscription?.unsubscribe();
   }
