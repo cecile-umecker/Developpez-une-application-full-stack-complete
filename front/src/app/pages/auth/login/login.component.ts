@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -6,6 +6,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { GoBackComponent } from 'src/app/utils/go-back/go-back.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -14,10 +15,11 @@ import { MatInputModule } from '@angular/material/input';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent {
+export class LoginComponent implements OnDestroy {
   loginForm: FormGroup;
   errorMessage?: string;
   loading = false;
+  private subscription?: Subscription;
 
   constructor(
     private fb: FormBuilder,
@@ -36,12 +38,16 @@ export class LoginComponent {
     this.loading = true;
     this.errorMessage = undefined;
 
-    this.authService.login(this.loginForm.value).subscribe({
+    this.subscription = this.authService.login(this.loginForm.value).subscribe({
       next: () => this.router.navigate(['/home']),
       error: err => {
         this.errorMessage = err.error?.message || 'Erreur de connexion';
         this.loading = false;
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.subscription?.unsubscribe();
   }
 }

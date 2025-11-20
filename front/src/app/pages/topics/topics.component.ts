@@ -15,28 +15,29 @@ import { MatCardModule } from '@angular/material/card';
 })
 export class TopicsComponent implements OnInit, OnDestroy {
   topics: Topic[] = [];
-  private topicSub?: Subscription;
+  private subscriptions = new Subscription();
 
   constructor(private topicService: TopicService) {}
 
   ngOnInit(): void {
-    this.topicSub = this.topicService.topics$.subscribe((topics) => {
+    const topicSub = this.topicService.topics$.subscribe((topics) => {
       this.topics = topics;
     });
+    this.subscriptions.add(topicSub);
 
-    this.topicService.getAllTopics().subscribe();
-
+    const getAllSub = this.topicService.getAllTopics().subscribe();
+    this.subscriptions.add(getAllSub);
   }
 
   onSubscribe(topicId: number) {
-    this.topicService.subscribeToTopic(topicId).subscribe({
+    const sub = this.topicService.subscribeToTopic(topicId).subscribe({
       next: () => console.log('Topic abonné !'),
       error: err => console.error('Erreur subscription', err)
     });
+    this.subscriptions.add(sub);
   }
 
-
   ngOnDestroy(): void {
-    this.topicSub?.unsubscribe();
+    this.subscriptions.unsubscribe();
   }
 }

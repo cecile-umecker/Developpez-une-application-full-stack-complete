@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { PostService } from 'src/app/core/services/post.service';
@@ -6,6 +6,7 @@ import { NewComment } from 'src/app/models/comment.model';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-create-comment',
@@ -14,13 +15,14 @@ import { MatIconModule } from '@angular/material/icon';
   templateUrl: './create-comment.component.html',
   styleUrls: ['./create-comment.component.scss']
 })
-export class CreateCommentComponent {
+export class CreateCommentComponent implements OnDestroy {
 
   @Input() postId!: number;
   @Output() commentCreated = new EventEmitter<void>();
 
   form: FormGroup;
   submitting = false;
+  private subscription?: Subscription;
 
   constructor(private fb: FormBuilder, private postService: PostService) {
     this.form = this.fb.group({
@@ -37,7 +39,7 @@ export class CreateCommentComponent {
     const payload: NewComment = { content: this.form.value.content };
 console.log('POST payload:', payload, 'url:', `/api/post/${this.postId}/comment`);
 
-    this.postService.createComment(this.postId, payload).subscribe({
+    this.subscription = this.postService.createComment(this.postId, payload).subscribe({
       next: (newComment) => {
         this.submitting = false;
         this.form.reset();
@@ -48,5 +50,9 @@ console.log('POST payload:', payload, 'url:', `/api/post/${this.postId}/comment`
         console.error(err);
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.subscription?.unsubscribe();
   }
 }
