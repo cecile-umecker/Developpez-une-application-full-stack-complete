@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
  * 
  * Key functionalities:
  * - Retrieve current user's profile information
- * - Update current user's profile (username, email)
+ * - Update current user's profile (username, email, password)
  * 
  * All endpoints under this controller require authentication and are mapped
  * under the "/user" path. Users can only access and modify their own profile.
@@ -49,12 +49,11 @@ public class UserController {
     /**
      * Updates the profile information of the currently authenticated user.
      * 
-     * This endpoint allows users to modify their profile details such as username
-     * and email address. The user is identified through their JWT authentication token.
-     * The system validates that the new username and email are unique before applying
-     * the update.
+     * This endpoint allows users to modify their profile details such as username,
+     * email address, and password. The user is identified through their JWT authentication token.
+     * The system validates that the new email is unique before applying the update.
      * 
-     * @param userUpdateRequestDTO the update request containing new username and/or email
+     * @param userUpdateRequestDTO the update request containing new username, email, and/or password
      * @return ResponseEntity containing the updated UserResponseDTO (200 OK)
      */
     @PutMapping("/me")

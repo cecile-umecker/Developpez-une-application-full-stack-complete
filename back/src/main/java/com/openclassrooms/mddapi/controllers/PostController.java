@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.*;
  * Key functionalities:
  * - Retrieve individual posts by ID
  * - Create new posts within topics
- * - Retrieve comments for a specific post (paginated)
+ * - Retrieve comments for a specific post
  * - Add comments to posts
  * 
  * All endpoints under this controller require authentication and are mapped

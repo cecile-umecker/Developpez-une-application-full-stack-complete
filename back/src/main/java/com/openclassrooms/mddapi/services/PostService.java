@@ -85,12 +85,12 @@ public class PostService {
 
     /**
      * Retrieves all comments for a specific post.
-     *
+     * 
      * This method fetches all comments associated with the specified post,
-     * ordered by creation date ascending, and returns them as a list.
-     *
+     * ordered by creation date in ascending order, and returns them as a list.
+     * 
      * @param postId the unique identifier of the post
-     * @return List of CommentResponseDTO
+     * @return List of CommentResponseDTO containing all comments for the post
      * @throws ResponseStatusException with 404 status if post is not found
      */
      public List<CommentResponseDTO> getCommentsByPost(Long postId) {

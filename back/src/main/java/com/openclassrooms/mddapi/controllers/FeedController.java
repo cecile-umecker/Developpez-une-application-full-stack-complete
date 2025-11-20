@@ -31,11 +31,12 @@ public class FeedController {
      * Retrieves a paginated feed of posts for the authenticated user.
      * 
      * This endpoint returns posts from topics that the current user has subscribed to,
-     * sorted by creation date (newest first). The results are paginated to improve
+     * sorted by creation date (newest first) by default. The results are paginated to improve
      * performance and user experience when dealing with large amounts of content.
      * 
      * @param page the page number to retrieve (zero-based index), defaults to 0
      * @param size the number of items per page, defaults to 10
+     * @param sort optional sort parameter in format "field,direction" (e.g., "createdAt,desc")
      * @return a Page containing FeedPostDTO objects with post details and metadata
      */
     @GetMapping
