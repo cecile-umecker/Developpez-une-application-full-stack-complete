@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { PostService } from 'src/app/core/services/post.service';
@@ -7,6 +7,7 @@ import { CommentComponent } from './comment/comment.component';
 import { CreateCommentComponent } from './comment/create-comment/create-comment.component';
 import { GoBackComponent } from 'src/app/utils/go-back/go-back.component';
 import { MatDividerModule } from '@angular/material/divider';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-post',
@@ -15,11 +16,12 @@ import { MatDividerModule } from '@angular/material/divider';
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.scss']
 })
-export class PostComponent implements OnInit {
+export class PostComponent implements OnInit, OnDestroy {
 
   postId!: number;
   post?: DetailedPost;
   loadingPost = true;
+  private subscription?: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -35,7 +37,7 @@ export class PostComponent implements OnInit {
 
   private loadPost(): void {
     this.loadingPost = true;
-    this.postService.getPost(this.postId).subscribe({
+    this.subscription = this.postService.getPost(this.postId).subscribe({
       next: (post) => {
         this.post = post;
         this.loadingPost = false;
@@ -44,5 +46,9 @@ export class PostComponent implements OnInit {
         this.loadingPost = false;
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.subscription?.unsubscribe();
   }
 }
