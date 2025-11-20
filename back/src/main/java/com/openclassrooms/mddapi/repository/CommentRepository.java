@@ -27,12 +27,10 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
    * Retrieves all comments for a specific post, ordered by creation date ascending.
    * 
    * This method fetches comments in chronological order (oldest first), allowing
-   * users to follow the discussion flow naturally. Results are paginated to handle
-   * posts with large numbers of comments efficiently.
+   * users to follow the discussion flow naturally.
    * 
    * @param post the Post entity to retrieve comments for
-   * @param pageable pagination parameters (page number, size, sorting)
-   * @return Page containing Comment entities ordered by creation date
+   * @return List containing Comment entities ordered by creation date
    */
   List<Comment> findByPostOrderByCreatedAtAsc(Post post);
 }

@@ -54,6 +54,7 @@ public class FeedService {
      * 
      * @param page the page number to retrieve (zero-based index)
      * @param size the number of posts per page
+     * @param sort optional sorting parameter in format "field,direction" (e.g., "createdAt,asc")
      * @return a Page containing FeedPostDTO objects with post previews
      */
     public Page<FeedPostDTO> getFeed(int page, int size, @RequestParam(required = false) String sort) {
